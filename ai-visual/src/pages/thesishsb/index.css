@@ -1,0 +1,68 @@
+.thesisHSB-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100vw - 200px);
+    height: calc(100vh - 64px);
+}
+
+.thesisHSB {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    height: 93%;
+    width: 96%;
+    padding: 20px 40px;
+    background-color: #fff;
+    overflow-y: scroll;
+}
+
+.thesisHSB>div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    width: 100%;
+    font-size: 16px;
+}
+
+.thesisHSB-abstract-title,
+.thesisHSB-keyWord-title,
+.thesisHSB-publication-title,
+.thesisHSB-date-title {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.thesisHSB>.thesisHSB-title {
+    justify-content: center;
+    width: 70%;
+    margin: 0 0 15px 0;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.thesisHSB>.thesisHSB-author {
+    justify-content: center;
+    width: 60%;
+    text-align: center;
+    margin: 0 0 15px 0;
+}
+
+.thesisHSB>.thesisHSB-original {
+    justify-content: end;
+    margin: 0 0 15px 0;
+}
+
+.thesisHSB>.thesisHSB-original>a{
+    color: #ED5A65;
+    border-bottom: 1px solid #ED5A65;
+}
+
+
+.thesisHSB-abstract,
+.thesisHSB-keyWord,
+.thesisHSB-publication,
+.thesisHSB-date {
+    margin: 0 0 15px 0;
+}

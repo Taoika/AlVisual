@@ -1,0 +1,67 @@
+.thesisMWMS-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100vw - 200px);
+    height: calc(100vh - 64px);
+}
+
+.thesisMWMS {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    height: 93%;
+    width: 96%;
+    padding: 20px 40px;
+    background-color: #fff;
+    overflow-y: scroll;
+}
+
+.thesisMWMS>div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    width: 100%;
+    font-size: 16px;
+}
+
+.thesisMWMS-abstract-title,
+.thesisMWMS-keyWord-title,
+.thesisMWMS-publication-title,
+.thesisMWMS-date-title {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.thesisMWMS>.thesisMWMS-title {
+    justify-content: center;
+    width: 66%;
+    margin: 0 0 15px 0;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.thesisMWMS>.thesisMWMS-author {
+    justify-content: center;
+    text-align: center;
+    margin: 0 0 15px 0;
+}
+
+.thesisMWMS>.thesisMWMS-original {
+    justify-content: end;
+    margin: 0 0 15px 0;
+}
+
+.thesisMWMS>.thesisMWMS-original>a{
+    color: #ED5A65;
+    border-bottom: 1px solid #ED5A65;
+}
+
+
+.thesisMWMS-abstract,
+.thesisMWMS-keyWord,
+.thesisMWMS-publication,
+.thesisMWMS-date {
+    margin: 0 0 15px 0;
+}

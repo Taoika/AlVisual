@@ -12,41 +12,30 @@
 .head-header {
     display: flex;
     justify-content: start;
-    padding: 0;
+    padding: 0 20px;
     background-color: #fff;
 }
 
 .head-logo {
-    font-size: 22px;
-    font-weight: 700;
-    color: #333333;
+    margin: 0 20px 0 0;
 }
 
 .head-logo:hover {
     cursor: pointer;
 }
 
-.head-logo>img {
-    width: 65px;
-    height: 50px;
-}
-
 .head-menu {
     width: 100%;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .head-menu>.ant-menu-item .anticon {
-    margin: 0 7px 0 0;
+    margin: 0 20px 0 0;
 }
 
 .head-menu .anticon>svg {
     width: 18px;
     height: 18px;
-}
-
-.head-menu>.ant-menu-item-selected a {
-    color:#ED5A65;
 }
 
 .head-menu>.ant-menu-item::after,
@@ -59,17 +48,3 @@
     transition: border-color .3s cubic-bezier(.645,.045,.355,1);
     content: "";
  }
-
-.head-menu:not(.ant-menu-dark)>.ant-menu-item-active:after,
-.head-menu:not(.ant-menu-dark)>.ant-menu-item-open:after,
-.head-menu:not(.ant-menu-dark)>.ant-menu-item-selected:after,
-.head-menu:not(.ant-menu-dark)>.ant-menu-item:hover:after {
-    border-bottom: 4px solid #ED5A65;
-}
-
-.head-menu:not(.ant-menu-dark)>.ant-menu-item-active>span>a,
-.head-menu:not(.ant-menu-dark)>.ant-menu-item-open>span>a,
-.head-menu:not(.ant-menu-dark)>.ant-menu-item-selected>span>a,
-.head-menu:not(.ant-menu-dark)>.ant-menu-item:hover>span>a {
-    color: #ED5A65;
-}

@@ -1,9 +1,19 @@
-import 'antd/dist/antd.min.css'
+import 'antd/dist/antd.variable.min.css';
+import { ConfigProvider } from 'antd';
 import { HomeOutlined,LineChartOutlined,DesktopOutlined,FileOutlined,RadarChartOutlined } from '@ant-design/icons';
 import React from 'react';
 import { useRoutes } from 'react-router-dom'
 import routes from './routes'
 import Nav from './component/nav/index'
+
+// 自定义主题色
+ConfigProvider.config({
+    theme: {
+      primaryColor: '#d0021b',
+      linkColor:'#d0021b',
+      borderColorBase:'#d0021b',
+    },
+  });
 
 export default function App() {
     const element = useRoutes(routes);

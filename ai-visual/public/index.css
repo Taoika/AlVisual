@@ -6,7 +6,6 @@
     padding: 0;
 }
 
-em,
 i {
     /* 把em和i斜体的文字不倾斜 */
     font-style: normal;

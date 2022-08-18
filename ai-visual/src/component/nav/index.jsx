@@ -2,7 +2,7 @@ import { Layout, Menu } from 'antd';
 import React from 'react'
 import { Link,useNavigate,Outlet } from 'react-router-dom'
 import './index.css'
-import logo from '../../assets/images/projectcontrol.png'
+import logo from '../../assets/images/logo.png'
 
 export default function Nav(props) {
 
@@ -20,7 +20,7 @@ export default function Nav(props) {
     let defaultSelectedKeys='';
     let k=1;
     for(const i in props){
-        defaultSelectedKeys=(k++)===2?i:defaultSelectedKeys;
+        defaultSelectedKeys=(k++)===1?i:defaultSelectedKeys;
         items.push({
             key:i,
             label:<Link to={`/${i}`}>{props[i]}</Link>
@@ -30,9 +30,9 @@ export default function Nav(props) {
     return (
         <div className='head'>
             <Header className="head-header" >
-                <div className="head-logo" onClick={handleClick}>
+                <Link to='/home' className="head-logo" onClick={handleClick}>
                     <img src={logo} alt="算法可视化平台" />
-                </div>
+                </Link>
                 <Menu className='head-menu' mode="horizontal" defaultSelectedKeys={[defaultSelectedKeys]} items={items} />
             </Header >
             <Outlet/>

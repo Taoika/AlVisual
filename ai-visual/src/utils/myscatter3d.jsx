@@ -1,28 +1,40 @@
 import React,{useState,useEffect} from 'react'
 import EChartsReact from 'echarts-for-react'
 import "echarts-gl"
-import { axiosJSONPost } from './request'
+import { axiosGet } from './request'
 
 // 封装3D散点图 参数为url（路径） data（请求体)
 export default function MyScatter3D(props) {
     
     // 此状态保存数据
-    const [allData,setAllData]=useState([]);
+    const [allData,setAllData]=useState(null);
     const [data,setData]=useState([]);
     const [count,setCount]=useState(1);
+    const [len,setLen]=useState(39);
+    // 记录请求路径
+    const [url,setUrl]=useState({pointUrl:''});
+
+    useEffect(()=>{
+        setUrl(props);
+    },[props])
 
     // 发送请求获取数据
     useEffect(()=>{
-      axiosJSONPost(props.url,props.data)
-      .then(
-        response=>{
-          setAllData(response.data.data);
-          setCount(response.data.data.length);
-        },
-        error=>{
-          console.log(error);
-        }
-      )
+      if(url.pointUrl){
+        console.log('3d url.pointUrl ->',url.pointUrl);
+        axiosGet(url.pointUrl)
+        .then(
+          response=>{
+            // console.log(response.data.data);
+            setAllData(response.data.data);
+            setLen(response.data.data.length-1);
+            setCount(response.data.data.length-1);
+          },
+          error=>{
+            console.log(error);
+          }
+        )
+      }
     },[]);
 
     // 散点图配置
@@ -30,21 +42,21 @@ export default function MyScatter3D(props) {
         const option = {
             grid3D: {},
             xAxis3D: {
-              min:0,
-              max:50,
+              min:-5,
+              max:5,
             },
             yAxis3D: {
-              min:0,
-              max:50,
+              min:-5,
+              max:5,
             },
             zAxis3D: {
               min:0,
-              max:6,
+              max:len+1,
             },
             roam:true,
             dataset: {
               dimensions: [
-                'Time',
+                'timeOrder',
                 'x',
                 'y',
               ],
@@ -53,12 +65,15 @@ export default function MyScatter3D(props) {
             series: [
               {
                 type: 'scatter3D',
-                symbolSize: 5,
+                symbolSize: 2,
                 encode: {
                   x: 'x',
                   y: 'y',
-                  z: 'Time',
+                  z: 'timeOrder',
                   tooltip: [0, 1, 2, 3, 4]
+                },
+                itemStyle: {
+                  color:'red',
                 }
               }
             ]
@@ -77,17 +92,27 @@ export default function MyScatter3D(props) {
           };
         }
         setCount(count - 1);
-        timerId = setTimeout(run, 1000);
+        timerId = setTimeout(run, 10);
         // 这下面为相关的业务代码
-        setData(v=>[...v,...allData[count-1]]);
+        if(allData){
+          // len===count是重新开始渲染 所以直接用新增数据覆盖原有数据
+          if(len===count){
+            setData(allData[len - count].list);
+          }else{
+            setData(v=>[...v,...allData[len - count].list]);
+          }
+        }
       };                                                                         
-      timerId = setTimeout(run, 1000);
+      timerId = setTimeout(run, 10);
       return () => {
         timerId && clearTimeout(timerId);
       };
     }, [count]);
 
   return (
-    <EChartsReact option={getOption()} style={{width:'400px'}} notMerge={false}></EChartsReact>
+    <div>
+      {/* <EChartsReact option={getOption()} style={{width:'100%',height:'100%'}} notMerge={false}></EChartsReact> */}
+      <EChartsReact option={getOption()} style={{width:'400px',height:'400px'}} notMerge={true}></EChartsReact>
+    </div>
   )
 }

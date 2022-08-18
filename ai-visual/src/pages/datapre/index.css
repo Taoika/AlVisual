@@ -1,0 +1,91 @@
+.dataPre-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: calc(100vh - 64px);
+    background-color: rgba(245, 245, 245, 1);
+}
+
+.dataPre {
+    width: 80%;
+    height: 94%;
+    padding: 50px 30px;
+    background-color: #fff;
+    overflow-y: scroll;
+    font-family: 'Inter';
+}
+
+.dataPre-title {
+    margin: 0 0 60px 0;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.dataPre-dataset {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.dataPre h2 {
+    width: 100%;
+    font-weight: 700;
+}
+
+.dataPre p {
+    width: 100%;
+}
+
+.dataPre-premise {
+    width: 94%;
+}
+
+.dataPre-premise>li {
+    list-style: disc;
+}
+
+.dataPre-table {
+    width: 95%;
+    margin: 40px 0 90px 0;
+}
+
+.dataPre-table h3 {
+    width: 100%;
+    font-weight: 700;
+    text-align: center;
+}
+
+.dataPre-table .ant-table-thead tr th {
+    font-weight: 700;
+}
+
+.dataPre-p-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 0 0 60px 0;
+    width: 100%;
+}
+
+.dataPre-p-content img {
+    border: 1px solid rgba(0,0,0,.1);
+}
+
+.dataPre-p-content i {
+    width: 242px;
+}
+
+.dataPre-code {
+    padding: 10px 20px ;
+    background-color: #E9E9E9;
+}
+
+.dataPre-reference strong {
+    color: black;
+}
+
+.dataPre-reference p {
+    color: rgba(237, 90, 101, 1);
+}

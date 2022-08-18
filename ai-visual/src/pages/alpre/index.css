@@ -1,0 +1,151 @@
+.alPre {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100vw;
+    height: calc(100vh - 64px);
+    font-family: 'Inter';
+    background-color: #F5F5F5;
+}
+
+.alPre-sider {
+    min-height: 450px;
+    width: 200px;
+    height: calc(100vh - 64px);
+    padding: 40px 0;
+    background-color: #fff;
+    box-shadow: 2px 2px 5px rgba(0,0,0,.2);
+}
+
+.alPre-sider>div {
+    text-align:start;
+    margin: 0 0 30px 0;
+    padding: 0 0 0 30px;
+}
+
+.alPre-sider h2 {
+    text-align:center;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+}
+
+.alPre-sider h4 {
+    display: flex;
+    justify-content: start;
+    font-weight: 700;
+}
+
+.alPre-model a {
+    font-size: 12px;
+    border-bottom: 1px solid rgba(237, 90, 101, 1);
+}
+
+.alPre-run {
+    margin: 0 0 0 30px;
+}
+
+.alPre-topo input:hover {
+    cursor: pointer;
+}
+
+.alPre-init {
+    position: relative;
+    width: 100%;
+    border: 1px solid rgba(0,0,0,.1);
+    padding: 10px;
+    margin: 0 0 20px 0;
+    background-color: #fff;
+}
+
+.alPre-init:hover {
+    cursor: pointer;
+}
+
+.alPre-init-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 346px;
+    width: 317px;
+    background-color: rgba(0,0,0,0);
+}
+
+.alPre-init img {
+    width: 100%;
+    border: 1px solid rgba(0,0,0,.3);
+}
+
+/* 滚动条上的滚动滑块 */
+.alPre-init-container .ant-drawer-body::-webkit-scrollbar-thumb {
+    background-color: #2f2c2c;
+    border-radius:  6.5px 6px 6px 6.5px;
+    height: 30px;
+}
+
+/* 滚动条上的箭头按钮 */
+.alPre-init-container .ant-drawer-body::-webkit-scrollbar {
+    width: 13px;
+}
+
+.alPre-content {
+    display: flex;
+    align-items: space-between;
+    flex-wrap: wrap;
+    min-height: 450px;
+    width: calc(100vw - 200px);
+    height: calc(100vh - 64px);
+    padding: 20px 100px;
+    background-color: #F5F5F5;
+}
+
+.alPre-content-top,
+.alPre-content-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 46%;
+}
+
+.alPre-content-center {
+    width: 100%;
+    align-items: start;
+}
+
+.alPre-content-top>div,
+.alPre-content-bottom>div {
+    min-height: 179px;
+    min-width: 135px;
+    width: 20vw;
+    height: 100%;
+    padding: 10px;
+    border: 1px solid rgba(0,0,0,.05);
+    background-color: #fff;
+}
+
+.alPre-content-title {
+    font-weight: 700;
+    margin: 0 0 5px 0;
+}
+
+.alPre-content-pre {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 85%;
+    border: 1px solid rgba(0,0,0,.2);
+}
+
+.alPre-content-top>.alPre-2DStatic,
+.alPre-content-bottom>.alPre-2DStatic {
+    border: 1px solid rgba(237, 90, 101, .1);
+}
+
+.alPre-2DStatic .alPre-content-title {
+    color: rgba(237, 90, 101, 1);
+}
+
+.alPre-2DStatic .alPre-content-pre {
+    border: 1px solid rgba(237, 90, 101, 1);
+}

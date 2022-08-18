@@ -24,8 +24,12 @@ export const axiosGet = (url,data) => {
       params:data,
     })
     .then(
-      response=>resolve(response),
-      error=>reject(error)
+      response=>{
+        resolve(response)
+      },
+      error=>{
+        reject(error)
+      }
     )
   })
 };

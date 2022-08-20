@@ -1,6 +1,6 @@
 import 'antd/dist/antd.variable.min.css';
 import { ConfigProvider } from 'antd';
-import { HomeOutlined,LineChartOutlined,DesktopOutlined,FileOutlined,RadarChartOutlined } from '@ant-design/icons';
+import { HomeOutlined,LineChartOutlined,DesktopOutlined,FileOutlined,RadarChartOutlined,AppstoreOutlined } from '@ant-design/icons';
 import React from 'react';
 import { useRoutes } from 'react-router-dom'
 import routes from './routes'
@@ -25,6 +25,7 @@ export default function App() {
                 alexe={<><DesktopOutlined />Execute The Algorithm</>}
                 thesis={<><FileOutlined />Thesis</>}
                 datapre={<><RadarChartOutlined />Dataset Presentation</>}
+                masapp={<><AppstoreOutlined />Mas application</>}
             />
             <div style={{ height: '64px', width: '100vw' }}></div>
             {element}

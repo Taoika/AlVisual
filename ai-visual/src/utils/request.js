@@ -24,7 +24,7 @@ export const axiosGet = (url,data) => {
       params:data,
     })
     .then(
-      response=>{
+      response=>{   
         resolve(response)
       },
       error=>{

@@ -20,7 +20,7 @@ export default function MyUpload(props) {
     }
 
   return (
-        <Upload {...config} beforeUpload={beforeUpload}>
+        <Upload {...config} beforeUpload={beforeUpload} maxCount={1}>
             <Button icon={<UploadOutlined />}>Upload The File &nbsp; </Button>
         </Upload>
   )

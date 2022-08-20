@@ -1,3 +1,4 @@
+import {Spin} from 'antd'
 import React,{useState,useEffect} from 'react'
 import EChartsReact from 'echarts-for-react'
 import "echarts-gl"
@@ -5,7 +6,11 @@ import { axiosGet } from './request'
 
 // 封装3D散点图 参数为url（路径） data（请求体)
 export default function MyScatter3D(props) {
-    
+
+    // loading状态
+    const [loading, setLoading] = useState(false); 
+    //是否显示加载中
+    const [load, setLoad] = React.useState()
     // 此状态保存数据
     const [allData,setAllData]=useState(null);
     const [data,setData]=useState([]);
@@ -16,16 +21,18 @@ export default function MyScatter3D(props) {
 
     useEffect(()=>{
         setUrl(props);
-    },[props])
+    },[props.pointUrl])
 
     // 发送请求获取数据
     useEffect(()=>{
       if(url.pointUrl){
-        console.log('3d url.pointUrl ->',url.pointUrl);
+        // console.log('3d url.pointUrl ->',url.pointUrl);
+        setLoading(true);
         axiosGet(url.pointUrl)
         .then(
           response=>{
             // console.log(response.data.data);
+            setLoading(false);
             setAllData(response.data.data);
             setLen(response.data.data.length-1);
             setCount(response.data.data.length-1);
@@ -35,7 +42,7 @@ export default function MyScatter3D(props) {
           }
         )
       }
-    },[]);
+    },[url]);
 
     // 散点图配置
     const getOption=()=>{
@@ -92,7 +99,7 @@ export default function MyScatter3D(props) {
           };
         }
         setCount(count - 1);
-        timerId = setTimeout(run, 10);
+        timerId = setTimeout(run, 1000);
         // 这下面为相关的业务代码
         if(allData){
           // len===count是重新开始渲染 所以直接用新增数据覆盖原有数据
@@ -103,16 +110,16 @@ export default function MyScatter3D(props) {
           }
         }
       };                                                                         
-      timerId = setTimeout(run, 10);
+      timerId = setTimeout(run, 1000);
       return () => {
         timerId && clearTimeout(timerId);
       };
     }, [count]);
 
   return (
-    <div>
-      {/* <EChartsReact option={getOption()} style={{width:'100%',height:'100%'}} notMerge={false}></EChartsReact> */}
-      <EChartsReact option={getOption()} style={{width:'400px',height:'400px'}} notMerge={true}></EChartsReact>
-    </div>
+    <Spin spinning={loading} size='large' tip='loading...'>
+      <EChartsReact option={getOption()} style={{width:'100%',height:'100%'}} notMerge={false}></EChartsReact>
+      {/* <EChartsReact option={getOption()} style={{width:'400px',height:'400px'}} notMerge={true}></EChartsReact> */}
+    </Spin>
   )
 }

@@ -87,3 +87,9 @@
     min-height: 10px;
     min-width: 10px;
 }
+
+.alExe-content-show .ant-spin-container,
+.alExe-content-show .ant-spin-nested-loading {
+    width: 100%;
+    height: 100%;
+}

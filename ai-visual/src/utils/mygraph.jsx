@@ -1,3 +1,4 @@
+import {Spin} from 'antd'
 import React,{ useEffect,useState } from 'react'
 import EChartsReact from 'echarts-for-react'
 import { axiosGet } from './request'
@@ -5,6 +6,8 @@ import { axiosGet } from './request'
 // 封装关系图 传参为url（请求路径） data（请求参数）
 export default function MyGraph(props) {
 
+    // loading状态
+    const [loading, setLoading] = useState(false);
     // 用于倒数
     const [count,setCount]=useState(-1);
     // 记录时间段的段数
@@ -17,69 +20,69 @@ export default function MyGraph(props) {
     const [allLink,setAllLink]=useState([]);
     // 记录全部点
     const [allData,setAllData]=useState([]);
+    // 记录请求路径
+    const [url,setUrl]=useState({pointUrl:'',linkUrl:''});
+    // 重复
+    const [repeat,setRepeat]=useState(0);
     // 固定点
     const fixedPoint=[
       {
-        id:'a',
+        name:'a',
         x: 4,
         y: 4,
-        lineStyle: {
-          opacity: 0,
-        },
-        // itemStyle: {
-        //   color:'white',
-        // }
+        itemStyle:{
+          color:'white',
+        }
       },
       {
-        id:'b',
+        name:'b',
         x: 4,
         y: -4,
-        lineStyle: {
-          opacity: 0,
-        },
-        // itemStyle: {
-        //   color:'white',
-        // }
+        itemStyle:{
+          color:'white',
+        }
       },
       {
-        id:'c',
+        name:'c',
         x: -4,
         y: 4,
-        lineStyle: {
-          opacity: 0,
-        },
-        // itemStyle: {
-        //   color:'white',
-        // }
+        itemStyle:{
+          color:'white',
+        }
       },
       {
-        id:'d',
+        name:'d',
         x: -4,
         y: -4,
-        lineStyle: {
-          opacity: 0,
-        },
-        // itemStyle: {
-        //   color:'white',
-        // }
+        itemStyle:{
+          color:'white',
+        }
       },
     ];
-    // 记录请求路径
-    const [url,setUrl]=useState({pointUrl:'',linkUrl:''});
 
+    // 随父组件改变url
     useEffect(()=>{
       setUrl(props);
     },[props.pointUrl])
+
+    // 随父组件改变repeat
+    useEffect(()=>{
+      console.log('props.repeat->',props.repeat);
+      setCount(len);
+      setRepeat(props.repeat);
+    },[props.repeat]);
   
     // 请求数据
     useEffect(()=>{
       if(url.pointUrl){
-        console.log('2d url.pointUrl ->',url.pointUrl);
+        // console.log('2d url.pointUrl ->',url.pointUrl);
       // 请求点数据
+      setLoading(true);
       axiosGet(url.pointUrl)
       .then(
           response=>{
             // // 设置数据
+            // console.log(response.data.data);
             setAllData(response.data.data);
             setLen(response.data.data.length-1);
             setCount(response.data.data.length-1);
@@ -87,6 +90,7 @@ export default function MyGraph(props) {
             axiosGet(url.linkUrl)
             .then(
               response=>{
+                // console.log(response.data.data);
                 let pointArr=[];
                 let timeArr=response.data.data.map((x)=>{
                   // 每次进来都要初始化pointArr数组
@@ -95,12 +99,14 @@ export default function MyGraph(props) {
                     for(const k of v.end){
                       pointArr.push({
                         source:v.id,
-                        target:k,
+                        target:k+1,
                       })
                     }
                   }
+                  // console.log(pointArr);
                   return pointArr;
                 })
+                setLoading(false);
                 setAllLink(timeArr);
               },
               error=>{
@@ -115,31 +121,36 @@ export default function MyGraph(props) {
       }
     },[url])
 
-      // 定时更新数据
+      // 定时更新数据 这个定时器实际上是一个回调
+      // 层层回调直到count为0 再从最底层开始返回并执行
       useEffect(() => {
-        let timerId = null;
-        const run = () => {
-          // console.log("count -> ", count);
-          if (count < 0) {
-            return () => {
-              timerId && clearTimeout(timerId);
-            };
-          }
-          setCount(count - 1);
-          timerId = setTimeout(run, 10);
-          // 这下面为相关的业务代码
-          if(len>-1){
-            // setData(v=>[...v,...allData[len - count].list]);
-            setLink(allLink[len - count]);
-            setData([...fixedPoint,...allData[len - count].list])
-            // setLink(v=>[...v,...allLink[len - count]]);
-          }
-        };                                                                         
-        timerId = setTimeout(run, 10);
-        return () => {
-          timerId && clearTimeout(timerId);
-        };
-      }, [allLink,link]);
+        if(allLink[0]){
+          let timerId = null;
+          // 定时器的回调函数
+          const run = () => {
+            if (count < 0) {
+              return () => {
+                timerId && clearTimeout(timerId);
+              };
+            }
+            setCount(count - 1);
+            timerId = setTimeout(run, 1000);
+            // 逻辑代码
+            if(len>-1){
+              // setData(v=>[...v,...allData[len - count].list]);
+              setData([...fixedPoint,...allData[len - count].list])
+              if(len!=0){
+                setLink(allLink[len - count]);
+                // setLink(v=>[...v,...allLink[len - count]]);
+              }
+            }
+          };                                                                   
+          timerId = setTimeout(run, 1000);
+          return () => {
+            timerId && clearTimeout(timerId);
+          };
+        }
+      }, [allLink,link,repeat]);
   
       // 数据配置
       const getOption=()=>{
@@ -158,14 +169,22 @@ export default function MyGraph(props) {
                   links: link,
                   data: data,
                   lineStyle: {
-                    opacity: 1,
+                    opacity: 0.08,
                     width: 1,
                     curveness: 0,
                     color:'#aaa',
                   },
                   itemStyle: {
                     color:'red',
-                  }
+                  },
+                  animation: 'auto',
+                  animationDuration: 1000,
+                  animationEasing: 'cubicInOut',
+                  animationThreshold: 2000,
+                  progressiveThreshold: 3000,
+                  progressive: 400,
+                  hoverLayerThreshold: 3000,
+                  useUTC: false,
                 }
               ]       
             };
@@ -173,11 +192,11 @@ export default function MyGraph(props) {
       }
   
     return (
-      <div>
+      <Spin spinning={loading} size='large' tip='loading...'>
           {/* notMerge 参数 更新数据时不合并 必须设置此参数才可以实时更新数据 盒子大小随时间段变化而变化=>解决echarts自适应带来的问题 */}
           {/* <EChartsReact option={getOption()} style={{height:`calc(100% - ${(len - count)} * 1%)`,width:`calc(100% - ${len - count} * 1%)`}} notMerge={false}/> */}
-          <EChartsReact option={getOption()} style={{height:`400px`,width:`400px`}} notMerge={true}/>
-          {/* <EChartsReact option={getOption()} style={{height:'400px'}} notMerge={false}/> */}
-      </div>
+          {/* <EChartsReact option={getOption()} style={{height:`400px`,width:`400px`}} notMerge={true}/> */}
+          <EChartsReact option={getOption()} style={{height:'100%',width:'100%'}} notMerge={true}/>
+      </Spin>
     )
 }

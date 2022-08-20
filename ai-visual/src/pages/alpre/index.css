@@ -98,6 +98,17 @@
     background-color: #F5F5F5;
 }
 
+.alPre-content-center {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.alPre-content-center>div,
+.alPre-content-center>i {
+    width: 20vw;
+}
+
 .alPre-content-top,
 .alPre-content-bottom {
     display: flex;
@@ -148,4 +159,10 @@
 
 .alPre-2DStatic .alPre-content-pre {
     border: 1px solid rgba(237, 90, 101, 1);
+}
+
+.alPre-content-pre .ant-spin-container,
+.alPre-content-pre .ant-spin-nested-loading {
+    width: 100%;
+    height: 100%;
 }

@@ -8,6 +8,10 @@ import AlExe from "../pages/alexe";
 import DataPre from "../pages/datapre";
 import AlPre from "../pages/alpre";
 import Home from "../pages/home";
+import MasApp from '../pages/masapp'
+import MasClassic from "../pages/masclassic";
+import MasClusters from "../pages/masclusters";
+import MasEvent from "../pages/masevent";
 
 const routes=[
     {
@@ -51,6 +55,28 @@ const routes=[
     {
         path:'/datapre',
         element:<DataPre/>,
+    },
+    {
+        path:'/masapp',
+        element:<MasApp/>,
+        children:[
+            {
+                path:'masclassic',
+                element:<MasClassic/>,
+            },
+            {
+                path:'masclusters',
+                element:<MasClusters/>,
+            },
+            {
+                path:'masevent',
+                element:<MasEvent/>,
+            },
+            {
+                path:'',
+                element:<Navigate to='masclassic'/>
+            }
+        ]
     },
     {
         path:'',

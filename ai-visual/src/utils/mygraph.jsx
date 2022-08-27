@@ -12,7 +12,7 @@ export default function MyGraph(props) {
     const [count,setCount]=useState(-1);
     // 记录时间段的段数
     const [len,setLen]=useState(1);
-    // 记录每一个时间段的关系
+    // 记录每一个时间段的点关系
     const [link,setLink]=useState([]);
     // 记录每一个时间段的点数据
     const [data,setData]=useState([]);
@@ -67,7 +67,6 @@ export default function MyGraph(props) {
 
     // 随父组件改变repeat
     useEffect(()=>{
-      console.log('props.repeat->',props.repeat);
       setCount(len);
       setRepeat(props.repeat);
     },[props.repeat]);
@@ -81,7 +80,7 @@ export default function MyGraph(props) {
       axiosGet(url.pointUrl)
       .then(
           response=>{
-            // // 设置数据
+            // 设置数据
             // console.log(response.data.data);
             setAllData(response.data.data);
             setLen(response.data.data.length-1);
@@ -194,8 +193,6 @@ export default function MyGraph(props) {
     return (
       <Spin spinning={loading} size='large' tip='loading...'>
           {/* notMerge 参数 更新数据时不合并 必须设置此参数才可以实时更新数据 盒子大小随时间段变化而变化=>解决echarts自适应带来的问题 */}
-          {/* <EChartsReact option={getOption()} style={{height:`calc(100% - ${(len - count)} * 1%)`,width:`calc(100% - ${len - count} * 1%)`}} notMerge={false}/> */}
-          {/* <EChartsReact option={getOption()} style={{height:`400px`,width:`400px`}} notMerge={true}/> */}
           <EChartsReact option={getOption()} style={{height:'100%',width:'100%'}} notMerge={true}/>
       </Spin>
     )

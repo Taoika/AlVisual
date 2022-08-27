@@ -268,7 +268,7 @@ export default function AlPre() {
                     </Tooltip>
                 </div>
                 <div>
-                    <Button onClick={handleRepeat}>again</Button>
+                    <Button onClick={handleRepeat}>Again</Button>
                 </div>
                 <i></i>
             </div>

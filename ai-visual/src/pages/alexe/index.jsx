@@ -29,6 +29,8 @@ export default function AlExe() {
     const [rc,setRc]=useState('1');
     // 对话框是否可见;
     const [isModalVisible, setIsModalVisible] = useState(false);
+    // 重复播放
+    const [repeat,setRepeat]=useState(0);
     // 静图请求路径
     const [frameUrl,setFrameUrl]=useState({
         framePointUrl:'',
@@ -98,6 +100,30 @@ export default function AlExe() {
         }
     }
 
+    // 处理重复播放
+    function handleRepeat(){
+        setRepeat(repeat + 1);
+    }
+
+    // 确认进行运算
+    const handleOk = () => {
+        setIsModalVisible(false);
+        // axiosGet('http://qgailab.com/algorithmVisualization/algorithm/run')
+        // .then(
+        //   response=>{
+        //     ;
+        //   },
+        //   error=>{
+        //     console.log(error);
+        //   }
+        // )
+    };
+    
+    // 取消运算
+    const handleCancel = () => {
+        setIsModalVisible(false);
+      };
+
     // 获取总帧数
     useEffect(()=>{
         axiosGet(`http://qgailab.com/algorithmVisualization/api/point/quantity?tableName=${model}_5_200`)
@@ -112,26 +138,6 @@ export default function AlExe() {
             }
         )
     },[model])
-
-    // 确认进行运算
-    const handleOk = () => {
-        setIsModalVisible(false);
-        // axiosGet('http://qgailab.com/algorithmVisualization/algorithm/run')
-        // .then(
-        //   response=>{
-        //     ;
-        //   },
-        //   error=>{
-        //     console.log(error);
-        //   }
-        // )
-      };
-    
-      // 取消运算
-      const handleCancel = () => {
-        setIsModalVisible(false);
-      };
-    
 
   return (
     <div className="alExe">
@@ -186,6 +192,7 @@ export default function AlExe() {
                     <MyGraph 
                             pointUrl={`http://qgailab.com/algorithmVisualization/api/point/timeOrder?tableName=DSG_5_200&timeOrder=${frame}&polishId=true`}
                             linkUrl={`http://qgailab.com/algorithmVisualization/api/adjacency/timeOrder?tableName=DSG_5_200&timeOrder=${frame}&polishId=true`}
+                            repeat={0}
                         >
                     </MyGraph>
                 </div>
@@ -193,11 +200,15 @@ export default function AlExe() {
             <div className="alExe-2DLive">
                 <div className="alExe-content-head">
                     <div className="alExe-content-head-title">2D Live</div>
+                    <Button onClick={handleRepeat}>Again</Button>
                 </div>
                 <div className="alExe-content-show">
                     <MyGraph 
                         pointUrl={`http://qgailab.com/algorithmVisualization/api/point?tableName=DSG_5_200&amount=30&polishId=true`}
                         linkUrl={`http://qgailab.com/algorithmVisualization/api/adjacency?tableName=DSG_5_200&amount=30&polishId=true`}
+                        // pointUrl={'http://localhost:8000/pointGraph'}
+                        // linkUrl={'http://localhost:8000/linkGraph'}
+                        repeat={repeat}
                     >
                     </MyGraph>
                 </div>

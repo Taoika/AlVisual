@@ -5,6 +5,7 @@ import React from 'react';
 import { useRoutes } from 'react-router-dom'
 import routes from './routes'
 import Nav from './component/nav/index'
+import { useState } from 'react';
 
 // 自定义主题色
 ConfigProvider.config({
@@ -16,16 +17,18 @@ ConfigProvider.config({
   });
 
 export default function App() {
+
     const element = useRoutes(routes);
+
     return (
         <>
             <Nav 
                 home={<><HomeOutlined/>Home</>} 
                 alpre={<><LineChartOutlined />Algorithm Presentation</>}
                 alexe={<><DesktopOutlined />Execute The Algorithm</>}
-                thesis={<><FileOutlined />Thesis</>}
+                masapp={<><AppstoreOutlined />Mas Application</>}
                 datapre={<><RadarChartOutlined />Dataset Presentation</>}
-                masapp={<><AppstoreOutlined />Mas application</>}
+                thesis={<><FileOutlined />Thesis</>}
             />
             <div style={{ height: '64px', width: '100vw' }}></div>
             {element}

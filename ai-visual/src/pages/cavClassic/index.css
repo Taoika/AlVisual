@@ -1,0 +1,15 @@
+.cavClassic {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.cavClassic-right-del {
+    height: 44px;
+    width: calc( 100vw - 200px );
+    padding: 0 40px 0 0 ;
+    border-bottom: 1px solid rgba(184, 184, 184, .5);
+    background-color: #fff;
+    line-height: 44px;
+    text-align: end;
+}

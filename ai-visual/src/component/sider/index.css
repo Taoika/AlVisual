@@ -7,28 +7,3 @@
 .mySider-menu {
     font-weight: 700;
 }
-
-/* .mySider-menu .ant-menu-item-selected {
-    background-color: #ffb0b0 !important;
-} */
-
-/* .mySider-menu .ant-menu-item-selected a {
-    color: #ffffff;
-} */
-
-/* .mySider-menu .ant-menu-item-active a {
-    color: #ED5A65;
-} */
-
-/* .mySider-menu .ant-menu-item {
-    color: rgb(0, 0, 0);
-} */
-
-/* .mySider-menu .ant-menu-item-selected::after {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    border-right: 3px solid #ED5A65;
-    content: "";
-} */

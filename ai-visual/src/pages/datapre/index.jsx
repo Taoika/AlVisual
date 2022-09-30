@@ -157,7 +157,7 @@ export default function DataPre() {
                         <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
                     </div>
                 </div>
-                <p><strong>Each topology is saved with an **NPY** file created by **NumPy** library, researchers can read it with any NPY software interface. The file contains the state information of all agents, and this dataset only involves two-dimensional state. For example:</strong></p>
+                {/* <p><strong>Each topology is saved with an **NPY** file created by **NumPy** library, researchers can read it with any NPY software interface. The file contains the state information of all agents, and this dataset only involves two-dimensional state. For example:</strong></p>
                 <p className='dataPre-code'><strong>
                     [<br/>
                         &nbsp;&nbsp;[x1, y1], # the state of 1st agent <br/>
@@ -165,7 +165,7 @@ export default function DataPre() {
                         &nbsp;&nbsp;... <br/>
                         &nbsp;&nbsp;[xn, yn], # the state of n-th agent <br/>
                     ]
-                </strong></p>
+                </strong></p> */}
             </div>
             <div className="dataPre-license">
                 <h2>2.License</h2>

@@ -19,6 +19,10 @@
     margin: 0 1vw 0 0;
 }
 
+.head-logo:hover {
+    cursor: pointer;
+}
+
 .head-menu {
     display: flex;
     justify-content: end;

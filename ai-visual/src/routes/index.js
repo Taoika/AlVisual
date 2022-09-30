@@ -12,6 +12,9 @@ import MasApp from '../pages/masapp'
 import MasClassic from "../pages/masclassic";
 import MasClusters from "../pages/masclusters";
 import MasEvent from "../pages/masevent";
+import CavCalssic from '../pages/cavClassic'
+import CavClusters from '../component/cavClusters'
+import CavEvent from '../component/cavEvent'
 
 const routes=[
     {
@@ -77,6 +80,18 @@ const routes=[
                 element:<Navigate to='masclassic'/>
             }
         ]
+    },
+    {
+        path:'cavClassic',
+        element:<CavCalssic/>,
+    },
+    {
+        path:'cavClusters',
+        element:<CavClusters/>,
+    },
+    {
+        path:'cavEvent',
+        element:<CavEvent/>,
     },
     {
         path:'',

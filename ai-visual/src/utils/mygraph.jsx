@@ -120,76 +120,76 @@ export default function MyGraph(props) {
       }
     },[url])
 
-      // 定时更新数据 这个定时器实际上是一个回调
-      // 层层回调直到count为0 再从最底层开始返回并执行
-      useEffect(() => {
-        if(allLink[0]){
-          let timerId = null;
-          // 定时器的回调函数
-          const run = () => {
-            if (count < 0) {
-              return () => {
-                timerId && clearTimeout(timerId);
-              };
-            }
-            setCount(count - 1);
-            timerId = setTimeout(run, 1000);
-            // 逻辑代码
-            if(len>-1){
-              // setData(v=>[...v,...allData[len - count].list]);
-              setData([...fixedPoint,...allData[len - count].list])
-              if(len!=0){
-                setLink(allLink[len - count]);
-                // setLink(v=>[...v,...allLink[len - count]]);
-              }
-            }
-          };                                                                   
-          timerId = setTimeout(run, 1000);
-          return () => {
-            timerId && clearTimeout(timerId);
-          };
-        }
-      }, [allLink,link,repeat]);
-  
-      // 数据配置
-      const getOption=()=>{
-          // console.log(links);
-          const option = {
-              tooltip: {},
-              series: [
-                {
-                  name: '2D Live',
-                  type: 'graph',
-                  layout: 'none',
-                  symbolSize: 2,
-                  roam: true,
-                  edgeSymbol: ['circle', 'circle'],
-                  edgeSymbolSize: [1, 1],
-                  links: link,
-                  data: data,
-                  lineStyle: {
-                    opacity: 0.08,
-                    width: 1,
-                    curveness: 0,
-                    color:'#aaa',
-                  },
-                  itemStyle: {
-                    color:'red',
-                  },
-                  animation: 'auto',
-                  animationDuration: 1000,
-                  animationEasing: 'cubicInOut',
-                  animationThreshold: 2000,
-                  progressiveThreshold: 3000,
-                  progressive: 400,
-                  hoverLayerThreshold: 3000,
-                  useUTC: false,
-                }
-              ]       
+    // 定时更新数据 这个定时器实际上是一个回调
+    // 层层回调直到count为0 再从最底层开始返回并执行
+    useEffect(() => {
+      if(allLink[0]){
+        let timerId = null;
+        // 定时器的回调函数
+        const run = () => {
+          if (count < 0) {
+            return () => {
+              timerId && clearTimeout(timerId);
             };
-          return option;
+          }
+          setCount(count - 1);
+          timerId = setTimeout(run, 1000);
+          // 逻辑代码
+          if(len>-1){
+            // setData(v=>[...v,...allData[len - count].list]);
+            setData([...fixedPoint,...allData[len - count].list])
+            if(len!=0){
+              setLink(allLink[len - count]);
+              // setLink(v=>[...v,...allLink[len - count]]);
+            }
+          }
+        };                                                                   
+        timerId = setTimeout(run, 1000);
+        return () => {
+          timerId && clearTimeout(timerId);
+        };
       }
-  
+    }, [allLink,link,repeat]);
+
+    // 数据配置
+    const getOption=()=>{
+        // console.log(links);
+        const option = {
+            tooltip: {},
+            series: [
+              {
+                name: '2D Live',
+                type: 'graph',
+                layout: 'none',
+                symbolSize: 2,
+                roam: true,
+                edgeSymbol: ['circle', 'circle'],
+                edgeSymbolSize: [1, 1],
+                links: link,
+                data: data,
+                lineStyle: {
+                  opacity: 0.08,
+                  width: 1,
+                  curveness: 0,
+                  color:'#aaa',
+                },
+                itemStyle: {
+                  color:'red',
+                },
+                animation: 'auto',
+                animationDuration: 1000,
+                animationEasing: 'cubicInOut',
+                animationThreshold: 2000,
+                progressiveThreshold: 3000,
+                progressive: 400,
+                hoverLayerThreshold: 3000,
+                useUTC: false,
+              }
+            ]       
+          };
+        return option;
+    }
+
     return (
       <Spin spinning={loading} size='large' tip='loading...'>
           {/* notMerge 参数 更新数据时不合并 必须设置此参数才可以实时更新数据 盒子大小随时间段变化而变化=>解决echarts自适应带来的问题 */}

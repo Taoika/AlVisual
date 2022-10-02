@@ -13,8 +13,8 @@ import MasClassic from "../pages/masclassic";
 import MasClusters from "../pages/masclusters";
 import MasEvent from "../pages/masevent";
 import CavCalssic from '../pages/cavClassic'
-import CavClusters from '../component/cavClusters'
-import CavEvent from '../component/cavEvent'
+import CavClusters from '../pages/cavClusters'
+import CavEvent from '../pages/cavEvent'
 
 const routes=[
     {

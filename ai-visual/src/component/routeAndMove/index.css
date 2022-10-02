@@ -1,0 +1,43 @@
+.RouteAndMove img:hover {
+    cursor: pointer;
+}
+
+.car {
+
+    position: absolute;
+    cursor: pointer;
+    /* transition: all 3s; */
+}
+
+.lefttest {
+    left: 1000px !important;
+}
+
+.ant-col-9 {
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    height: 600px;
+    width: 1200px;
+}
+
+.container_box {
+    width: 500px;
+    height: 500px;
+    margin: 30px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #a5b1b8;
+    background-color: #f3f3f3;
+}
+
+.triangle {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+}
+
+.triangle:hover {
+    cursor: pointer;
+
+}

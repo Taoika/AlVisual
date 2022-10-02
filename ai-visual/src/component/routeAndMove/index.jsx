@@ -62,7 +62,7 @@ export default function RouteAndMove(props) {
                 // 计算移动距离 = 当前鼠标坐标 - 鼠标按下坐标
                 var left = event2.clientX - ol;
                 var top = event2.clientY - ot;
-                var car = document.querySelector('.car')
+                var car = car1.current
                 let o = toCenter({ x: car.offsetLeft, y: car.offsetTop })
                 let angle = Math.atan((top - o.y) / (left - o.x))
                 let tempY = R * Math.sin(angle)

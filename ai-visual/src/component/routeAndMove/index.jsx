@@ -64,13 +64,16 @@ export default function RouteAndMove(props) {
                 var top = event2.clientY - ot;
                 var car = car1.current
                 let o = toCenter({ x: car.offsetLeft, y: car.offsetTop })
-                let angle = Math.atan((top - o.y) / (left - o.x))
-                let tempY = R * Math.sin(angle)
-                let tempX = R * Math.cos(angle)
-                let x = o.x + tempX;
-                let y = o.y + tempY;
-                set({ x, y });
-                setAngle(angle * 65)
+                if ((left - o.x) !== 0) {
+                    let angle = Math.atan((top - o.y) / (left - o.x))
+                    let tempY = R * Math.sin(angle)
+                    let tempX = R * Math.cos(angle)
+                    let x = o.x + tempX;
+                    let y = o.y + tempY;
+                    set({ x, y });
+                    setAngle(angle * 65)
+
+                }
 
             }
 
@@ -133,7 +136,10 @@ export default function RouteAndMove(props) {
             // 绑定一个鼠标松开事件
             document.onmouseup = (e) => {
                 // 取消鼠标移动事件
-                coorTransform(lastLeft, lastTop, setXyz)
+                if (lastLeft) {
+                    coorTransform(lastLeft, lastTop, setXyz)
+
+                }
                 document.onmousemove = null;
                 document.onmouseup = null;
                 // 还原鼠标手

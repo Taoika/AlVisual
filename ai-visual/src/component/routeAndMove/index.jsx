@@ -25,7 +25,7 @@ export default function RouteAndMove(props) {
     //小三角
     const triangle = useRef(null);
     //半径R
-    const R = 72
+    const R = 70
     useEffect(() => {
 
         // if (i < 100000) {
@@ -66,12 +66,21 @@ export default function RouteAndMove(props) {
                 let o = toCenter({ x: car.offsetLeft, y: car.offsetTop })
                 if ((left - o.x) !== 0) {
                     let angle = Math.atan((top - o.y) / (left - o.x))
+                    angle = angle > 90 ? -angle : angle
                     let tempY = R * Math.sin(angle)
                     let tempX = R * Math.cos(angle)
-                    let x = o.x + tempX;
-                    let y = o.y + tempY;
+                    let x, y
+                    if (left < o.x) {
+                        x = o.x - tempX;
+                        y = o.y - tempY;
+                    } else {
+                        x = o.x + tempX;
+                        y = o.y + tempY;
+                    }
                     set({ x, y });
-                    setAngle(angle * 65)
+                    angle = angle * 57
+                    console.log(angle);
+                    left < o.x ? setAngle(180 + angle) : setAngle(angle)
 
                 }
 
@@ -219,8 +228,8 @@ export default function RouteAndMove(props) {
     }, [xyz]);
     //坐标转换，从左上角转换到车的正中间
     const toCenter = (xyz) => {
-        let toCenterX = 50
-        let toCenterY = 18
+        let toCenterX = 57
+        let toCenterY = 12
         let x = xyz.x + toCenterX
         let y = xyz.y + toCenterY
         return { x, y }

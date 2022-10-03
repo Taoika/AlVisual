@@ -32,7 +32,7 @@ export default function App() {
                 home={type === 0 ? <><HomeOutlined/>Home</> : ''} 
                 alpre={type === 0 ? <><LineChartOutlined />Algorithm Presentation</> : ''}
                 alexe={type === 0 ? <><DesktopOutlined />Execute The Algorithm</> : ''}
-                masapp={type === 0 ? <><AppstoreOutlined />Thesis</> : ''}
+                masapp={type === 0 ? <><AppstoreOutlined />Mas application</> : ''}
                 datapre={type === 0 ? <><RadarChartOutlined />Dataset Presentation</> : ''}
                 thesis={type === 0 ? <><FileOutlined />Thesis</> : ''}
                 cav={type === 0 ? <><AppstoreOutlined />CAV</> : ''}

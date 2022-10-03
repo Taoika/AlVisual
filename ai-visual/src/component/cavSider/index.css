@@ -19,10 +19,12 @@
     flex-wrap: wrap;
     justify-content: space-between;
     padding: 5px 13px;
+    margin: 0 0 10px 0;
 }
 
 .cav-sider-speed-input {
-    width: 50%;
+    text-align: end;
+    width: 60%;
 }
 
 .cav-sider-body input {
@@ -39,4 +41,11 @@
     justify-content: center;
     height: 25px;
     width: 75px;
+}
+
+.cav-sider-button {
+    width: 100%;
+    margin: 10px 0 0 0 ;
+    display: flex;
+    justify-content: space-between;
 }

@@ -11,7 +11,6 @@ const sleep = (delay) => {
     }
 }
 export default function RouteAndMove(props) {
-    const [scrCoor, setScrCoor] = useState([{ x: 1, y: 2 }, { x: 3, y: 5 }, { x: 5, y: 8 }, { x: 12, y: 10 }, { x: 14, y: 12 }, { x: 15, y: 15 }]);
     // 图像位置状态
     const [xyz, setXyz] = useState({ x: 200, y: 120 });
     const [trixyz, setTrixyz] = useState({ x: 200, y: 120 });
@@ -26,21 +25,7 @@ export default function RouteAndMove(props) {
     const triangle = useRef(null);
     //半径R
     const R = 70
-    useEffect(() => {
 
-        // if (i < 100000) {
-        //     setXyz({ x: (i + 1) / mother, y: 10 })
-        //     setI(i + 1)
-        //     // sleep(10000)
-        // }
-        // else if (i < 2000) {
-        //     setXyz({ x: 2000 - i, y: 2000 - i })
-        //     setI(i + 1)
-        // }
-        // console.log('开始');
-        // setXyz({ x: 293, y: 59 })
-        // sleep(3000)
-    }, [i])
     //处理鼠标旋转图像
     const rotate = (obj, set) => {
         obj.onmousedown = (event) => {
@@ -174,22 +159,26 @@ export default function RouteAndMove(props) {
         set({ x, y: last - 25 })
     }
     useEffect(() => {
-        // const x = props.scrCoor[0].x + 'px';
-        // const y = props.scrCoor[0].y - 28 + 'px';
-        // setXyz({ x, y })
-        // if (i < 100000) {
-        //     setXyz({ x: (i + 1) / mother, y: 10 })
-        //     setI(i + 1)
-        //     // sleep(10000)
-        // }
-        // else if (i < 2000) {
-        //     setXyz({ x: 2000 - i, y: 2000 - i })
-        //     setI(i + 1)
-        // }
-        // console.log('开始');
-        // setXyz({ x: 293, y: 59 })
-        // sleep(3000)
+        let i = 0;
+        const timer = setInterval(() => {
+            if (i < props.scrCoor.length) {
+                const x = props.scrCoor[i].x + 'px';
+                const y = props.scrCoor[i].y - 28 + 'px';
+                var car = document.querySelector('.car')
+                if (car.offsetTop !== 120) {
+                    let angle = car.offsetTop - y.split('p')[0]
+                    Math.abs(angle) - 20 <= 0 ? setAngle(angle) : angle > 0 ? setAngle(20) : setAngle(-20)
+                }
+                setXyz({ x, y })
+                var lane = document.querySelector('.cavClassic-right-main')
+                lane.style.marginLeft = (-i) * 10 + 'px'
+                i++
+            } else {
+                clearInterval(timer)
+            }
+        }, 50)
     }, [props.scrCoor])
+
     // 拖曳功能
     useEffect(() => {
         if (car1) drag(car1.current, setXyz);
@@ -223,7 +212,7 @@ export default function RouteAndMove(props) {
     useEffect(() => {
         let temp = toCenter(xyz)
         temp.x += R
-        setAngle(0)
+        // setAngle(0)
         setTrixyz(temp)
     }, [xyz]);
     //坐标转换，从左上角转换到车的正中间

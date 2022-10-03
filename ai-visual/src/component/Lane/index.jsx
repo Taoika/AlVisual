@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
-
+const sleep = (delay) => {
+    var start = (new Date()).getTime();
+    while ((new Date()).getTime() - start < delay) {
+        continue;
+    }
+}
 export default function Lane({ Nlane, setScrCoor, coor, }) {
 
 
@@ -19,7 +24,7 @@ export default function Lane({ Nlane, setScrCoor, coor, }) {
     // 坐标系坐标的最大最小值(px)
     // const [extre, setExtre] = useState({ minX: 0, minY: 0, maxX: 0, maxY: 0 });
     // 最大坐标系坐标(无单位)
-    const [max, setMax] = useState({ x: 140, y: 10 });
+    const [max, setMax] = useState({ x: 100, y: 100 });
 
     // 坐标系所在容器
     const laneContainer = useRef(null);
@@ -64,18 +69,25 @@ export default function Lane({ Nlane, setScrCoor, coor, }) {
         // 最大y
         const maxY = clientHeight;
 
-        const sysCoor = coor.map((i) => {
-            let x = (maxX * i.x / max.x)
-            let ytemp = (maxY * i.y / max.y)
-            let MinY = 35
-            let MaxY = clientHeight - 30
-            let y = ytemp < MinY ? MinY : ytemp > MaxY ? MaxY : ytemp
-            return { x, y };
-        })
+        if (coor.length > 10) {
+            coor.map((i) => {
+                i.list.map((j) => {
+                    let x = (maxX * j.x / max.x)
+                    let ytemp = (maxY * j.y / max.y)
+                    let MinY = 35
+                    let MaxY = clientHeight - 30
+                    let y = ytemp < MinY ? MinY : ytemp > MaxY ? MaxY : ytemp
+                    j.x = x + offsetLeft;
+                    j.y = offsetTop + clientHeight - y;
+                })
 
-        set(sysCoor.map((i) => {
-            return { x: i.x + offsetLeft, y: offsetTop + clientHeight - i.y };
-        }))
+            })
+            set(coor)
+            // set(sysCoor.map((i) => {
+            //     return { x: i.x + offsetLeft, y: offsetTop + clientHeight - i.y };
+            // }))
+        }
+
     }
 
     // 获取可设置的x y屏幕坐标范围(px) 参数: 坐标轴所在对象 set

@@ -5,7 +5,7 @@ const sleep = (delay) => {
         continue;
     }
 }
-export default function Lane({ Nlane, setScrCoor, coor, }) {
+export default function Lane({ Nlane, setScrCoor, coor, move }) {
 
 
     // 现有小车A B C D E F 
@@ -57,7 +57,7 @@ export default function Lane({ Nlane, setScrCoor, coor, }) {
     // 坐标转换 由无单位的坐标系坐标转换为屏幕坐标 参数: 坐标轴所在对象 无单位的坐标系坐标 坐标系坐标的最大值 set
     const treCoorTransform = (obj, coor, max, set) => {
         // obj宽度
-        const clientWidth = obj.clientWidth;
+        const clientWidth = obj.clientWidth / 13;
         // obj长度
         const clientHeight = obj.clientHeight;
         // obj左边距
@@ -68,12 +68,13 @@ export default function Lane({ Nlane, setScrCoor, coor, }) {
         const maxX = clientWidth;
         // 最大y
         const maxY = clientHeight;
-
         if (coor.length > 10) {
+            // let maxy = Math.max(...coor[0].list.map(v => (v.y))) + 10
+            let maxy = 100
             coor.map((i) => {
                 i.list.map((j) => {
                     let x = (maxX * j.x / max.x)
-                    let ytemp = (maxY * j.y / max.y)
+                    let ytemp = (maxY * j.y / maxy)
                     let MinY = 35
                     let MaxY = clientHeight - 30
                     let y = ytemp < MinY ? MinY : ytemp > MaxY ? MaxY : ytemp
@@ -105,7 +106,7 @@ export default function Lane({ Nlane, setScrCoor, coor, }) {
     // }
 
     useEffect(() => {
-        if (laneContainer) {
+        if (laneContainer && coor.length > 10 && move) {
             // getExtre(laneContainer.current, setExtre);
             // coorTransform(laneContainer.current, scrCoor, max, setCoor);
             // treCoorTransform(laneContainer.current, treCoor, max, setTreScrCoor);

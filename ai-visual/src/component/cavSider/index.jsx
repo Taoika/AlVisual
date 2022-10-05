@@ -2,9 +2,7 @@ import { InputNumber, Button, Space } from 'antd'
 import React,{ useRef, useEffect, useState } from 'react'
 import './index.css'
 
-export default function CavSider({ setNcar, setNlane, setSdistance, setSpeedx, setSpeedy }) {
-
-        // 车辆数量
+export default function CavSider({ setMove, setNcar, setNlane, setSdistance, setSpeedx, setSpeedy }) {
         const Ncar = React.useRef()
         // 车道数量
         const Nlane = React.useRef()
@@ -27,6 +25,11 @@ export default function CavSider({ setNcar, setNlane, setSdistance, setSpeedx, s
 
 
                 //数组是为了生成对应的li
+                setMove(false)
+                //清楚所有定时器
+                for (let j = 0; j < 1000; j++) {
+                        clearInterval(j)
+                }
                 let arr = []
                 while (Ncar.current.value--) {
                         arr.push(0)
@@ -58,10 +61,10 @@ export default function CavSider({ setNcar, setNlane, setSdistance, setSpeedx, s
                                         Num of Car <InputNumber ref={Ncar} max={CarNum * 4} min={1} defaultValue={1}></InputNumber>
                                 </div>
                                 <div className="cav-sider-laneNum">
-                                        Num of Lane <InputNumber ref={Nlane} max={4} min={1} defaultValue={2} onBlur={handleLaneNum}></InputNumber>
+                                        Num of Lane <InputNumber ref={Nlane} max={4} min={1} defaultValue={2} onBlur={handleLaneNum} onPressEnter={handleLaneNum}></InputNumber>
                                 </div>
                                 <div className="cav-sider-safe">
-                                        Safe Distance <InputNumber ref={Sdistance} defaultValue={10} min={10} max={20}></InputNumber>
+                                        Safe Distance <InputNumber ref={Sdistance} defaultValue={110} min={110} max={200}></InputNumber>
                                 </div>
                                 <div className="cav-sider-speed">
                                         <div className="cav-sider-speed-title">Speed</div>

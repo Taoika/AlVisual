@@ -1,8 +1,15 @@
 .cavClassic {
     display: flex;
     justify-content: space-between;
+    position: relative;
     overflow: hidden;
     /* flex-wrap: wrap; */
+}
+
+.cavClassic-right {
+    overflow: hidden;
+    width: calc(100vw - 200px);
+    height: 100%;
 }
 
 .cavClassic-right-del {
@@ -19,7 +26,7 @@
     display: flex;
     align-items: center;
     background-color: rgb(89, 89, 89);
-    /* width: 300vw; */
+    width: 3000vw;
     height: calc(100vh - 44px - 64px);
     margin-left: -0px;
 }
@@ -50,4 +57,31 @@
 .cavClassic-right-lane li:last-child {
     border-bottom: 3px solid white;
 
+}
+
+.cavClassic video {
+    /* position: absolute; */
+    z-index: 2;
+    width: calc(100vw - 200px);
+    height: calc(100vh - 44px - 64px);
+    background: rgb(89, 89, 89);
+}
+
+.cavClassic .video {
+    position: absolute;
+    z-index: 2;
+    left: 200px;
+    top: 108px;
+    width: calc(100vw - 200px);
+    height: calc(100vh - 44px - 64px);
+    background: rgb(89, 89, 89);
+}
+
+.loadingJpg {
+    position: absolute;
+    z-index: 1;
+    left: 185px;
+    top: 108px;
+    width: calc(100vw - 200px);
+    height: calc(100vh - 44px - 64px);
 }

@@ -18,6 +18,8 @@ ConfigProvider.config({
 
 export default function App() {
 
+    console.log('abc');
+
     const element = useRoutes(routes);
     // 0是普通页面 1是cav页面
     const [type,setType] = useState(0);

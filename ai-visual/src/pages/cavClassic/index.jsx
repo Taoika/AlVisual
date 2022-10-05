@@ -20,15 +20,18 @@ export default function CavClassic() {
 	const [scrCoor, setScrCoor] = useState([{ x: 0, y: 0 }])
 	//坐标系坐标
 	const [coor, setCoor] = useState([{ x: 0, y: 7.5 }])
+	
 	useEffect(() => {
 		if (Ncar.length > 0 && Nlane.length > 0) {
 			axiosGet('http://qgailab.com/algorithmVisualization/api/car?tableName=cavtest&polishId=true&amount=100&pieces=15').
 				then(response => { setCoor(response.data.data); console.log(response.data.data, 'data') })
 		}
 	}, [Ncar, Nlane])
+
 	useEffect(() => {
 		setAngle({ x: Speedx, y: Speedy })
 	}, [Speedx, Speedy])
+
 	return (
 		<div className="cavClassic">
 			<CavSider setNcar={setNcar} setNlane={setNlane} setSdistance={setSdistance} setSpeedx={setSpeedx} setSpeedy={setSpeedy} />

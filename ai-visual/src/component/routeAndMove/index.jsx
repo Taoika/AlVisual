@@ -1,5 +1,7 @@
 import React from 'react'
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
+import { Context } from '../../pages/cavClassic'
+
 import './index.css'
 import Car from '../../assets/images/car.png'
 // 这个组件就是一整个可以跟随鼠标移动的元素 还需要根据实际情况限制图像的距离
@@ -11,6 +13,7 @@ const sleep = (delay) => {
     }
 }
 export default function RouteAndMove(props) {
+    const { Ncar, Nlane } = useContext(Context)
     // 图像位置状态
     const [xyz, setXyz] = useState({ x: 200, y: 120 });
     const [trixyz, setTrixyz] = useState({ x: 200, y: 120 });
@@ -159,24 +162,57 @@ export default function RouteAndMove(props) {
         set({ x, y: last - 25 })
     }
     useEffect(() => {
-        let i = 0;
-        const timer = setInterval(() => {
-            if (i < props.scrCoor.length) {
-                const x = props.scrCoor[i].x + 'px';
-                const y = props.scrCoor[i].y - 28 + 'px';
-                var car = document.querySelector('.car')
-                if (car.offsetTop !== 120) {
+        if (props.scrCoor.length > 10 && props.move) {
+            let i = 0;
+            let count = 0;
+            props.scrCoor[0].y < props.scrCoor[props.scrCoor.length - 1].y ? setAngle(10) : setAngle(-10)
+            const timer = setInterval(() => {
+                // && Math.abs(props.scrCoor[i].y - props.scrCoor[i + 1].y) <= 2
+                if (i < props.scrCoor.length - 1 && props.move) {
+                    const x = props.scrCoor[i].x + 'px';
+                    const y = props.scrCoor[i].y - 28 + 'px';
+                    var cars = document.querySelectorAll('.car')
+                    let car = cars[props.index]
+                    // if (car.offsetTop !== 120) {
                     let angle = car.offsetTop - y.split('p')[0]
-                    Math.abs(angle) - 20 <= 0 ? setAngle(angle) : angle > 0 ? setAngle(20) : setAngle(-20)
+                    if (Math.abs(angle) < 1 && angle !== 0) {
+                        count++;
+                        if (count >= 10 && count < 100) {
+                            let tz = 10;
+                            let tf = -10;
+                            let timer1 = setInterval(() => {
+                                angle < 0 ? setAngle(tz--) : setAngle(tf++)
+                                if (tz < 0 || tf > 0) {
+                                    clearInterval(timer1)
+                                }
+                            }, 50)
+                            count = 120
+                        }
+                    }
+                    // Math.abs(angle) - 20 <= 0 ? setAngle(angle) : angle > 0 ? setAngle(20) : setAngle(-20)
+                    // if (props.index === 0) {
+                    //     console.log(-angle * 10);
+                    // }
+                    // setAngle(-angle * 5)
+                    // if (Math.abs(angle) < 1 && angle !== 0) {
+                    //     setAngle(0)
+                    // } else if (angle > 0 && angle !== -10) {
+                    //     setAngle(-10)
+                    // } else if (angle < 0 && angle !== 10) {
+                    //     setAngle(10)
+                    // }
+                    // }
+                    setXyz({ x, y })
+                    var lane = document.querySelector('.cavClassic-right-main')
+                    lane.style.marginLeft = (-i) * 10 + 'px'
+                    i++
+                } else {
+                    props.setMove(false)
+                    clearInterval(timer)
+                    setAngle(0)
                 }
-                setXyz({ x, y })
-                var lane = document.querySelector('.cavClassic-right-main')
-                lane.style.marginLeft = (-i) * 10 + 'px'
-                i++
-            } else {
-                clearInterval(timer)
-            }
-        }, 50)
+            }, 50)
+        }
     }, [props.scrCoor])
 
     // 拖曳功能
@@ -211,16 +247,16 @@ export default function RouteAndMove(props) {
     //让小三角跟着小车移动
     useEffect(() => {
         let temp = toCenter(xyz)
-        temp.x += R
-        // setAngle(0)
+        temp.x = temp.x + R + 'px'
+        temp.y = temp.y + 'px'
         setTrixyz(temp)
     }, [xyz]);
-    //坐标转换，从左上角转换到车的正中间
+    //坐标转换，从左上角转换到车的正中间(注意传回两个数字，不是px)
     const toCenter = (xyz) => {
         let toCenterX = 57
         let toCenterY = 12
-        let x = xyz.x + toCenterX
-        let y = xyz.y + toCenterY
+        let x = Number.parseInt(xyz.x) + toCenterX
+        let y = Number.parseInt(xyz.y) + toCenterY
         return { x, y }
     }
     return (

@@ -2,7 +2,7 @@ import { InputNumber, Button, Space } from 'antd'
 import React from 'react'
 import './index.css'
 
-export default function CavSider({ setNcar, setNlane, setSdistance, setSpeedx, setSpeedy }) {
+export default function CavSider({ setMove, setNcar, setNlane, setSdistance, setSpeedx, setSpeedy }) {
         const Ncar = React.useRef()
         const Nlane = React.useRef()
         const Sdistance = React.useRef()
@@ -16,6 +16,11 @@ export default function CavSider({ setNcar, setNlane, setSdistance, setSpeedx, s
 
 
                 //数组是为了生成对应的li
+                setMove(false)
+                //清楚所有定时器
+                for (let j = 0; j < 1000; j++) {
+                        clearInterval(j)
+                }
                 let arr = []
                 while (Ncar.current.value--) {
                         arr.push(0)

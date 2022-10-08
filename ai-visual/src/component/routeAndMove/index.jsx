@@ -1,3 +1,4 @@
+import { Popover } from 'antd';
 import React from 'react'
 import { useEffect, useState, useRef, useContext } from 'react';
 import { Context } from '../../pages/cavClassic'
@@ -13,7 +14,7 @@ const sleep = (delay) => {
     }
 }
 export default function RouteAndMove(props) {
-    const { Ncar, Nlane } = useContext(Context)
+    // const { Ncar, Nlane } = useContext(Context)
     // 图像位置状态
     const [xyz, setXyz] = useState({ x: 200, y: 120 });
     const [trixyz, setTrixyz] = useState({ x: 200, y: 120 });
@@ -28,6 +29,8 @@ export default function RouteAndMove(props) {
     const triangle = useRef(null);
     //半径R
     const R = 70
+    // 气泡内容
+    const content = '来了来了';
 
     //处理鼠标旋转图像
     const rotate = (obj, set) => {
@@ -67,7 +70,7 @@ export default function RouteAndMove(props) {
                     }
                     set({ x, y });
                     angle = angle * 57
-                    console.log(angle);
+                    // console.log(angle);
                     left < o.x ? setAngle(180 + angle) : setAngle(angle)
 
                 }
@@ -144,11 +147,14 @@ export default function RouteAndMove(props) {
             }
         }
     }
+
     //拖曳后吸附坐标转换
     //处理拖曳 屏幕坐标转换坐标系坐标
     const coorTransform = (x, targetY, set) => {
         // obj长度
-        var lis = document.querySelector('.cavClassic-right-lane').children
+        // console.log(`.Lane`);
+        var lis = document.querySelector(`.Lane`).children
+
         let min = 100000;
         let last = 0;
         for (let i = 0; i < lis.length; i++) {
@@ -161,6 +167,7 @@ export default function RouteAndMove(props) {
         }
         set({ x, y: last - 25 })
     }
+    
     useEffect(() => {
         if (props.scrCoor.length > 10 && props.move) {
             let i = 0;
@@ -203,7 +210,7 @@ export default function RouteAndMove(props) {
                     // }
                     // }
                     setXyz({ x, y })
-                    var lane = document.querySelector('.cavClassic-right-main')
+                    var lane = document.querySelector(`.${props?.module}-right-main`)
                     lane.style.marginLeft = (-i) * 10 + 'px'
                     i++
                 } else {
@@ -218,7 +225,7 @@ export default function RouteAndMove(props) {
     // 拖曳功能
     useEffect(() => {
         if (car1) drag(car1.current, setXyz);
-        if (triangle) rotate(triangle.current, setTrixyz);
+        if (triangle && !props?.notRotate) rotate(triangle.current, setTrixyz);
     }, []);
 
     // 将x，y形式的速度转换成角度形式的速度 Promise
@@ -244,6 +251,7 @@ export default function RouteAndMove(props) {
             setAngle(value)
         })
     }, [props.angle]);
+
     //让小三角跟着小车移动
     useEffect(() => {
         let temp = toCenter(xyz)
@@ -251,6 +259,7 @@ export default function RouteAndMove(props) {
         temp.y = temp.y + 'px'
         setTrixyz(temp)
     }, [xyz]);
+
     //坐标转换，从左上角转换到车的正中间(注意传回两个数字，不是px)
     const toCenter = (xyz) => {
         let toCenterX = 57
@@ -259,11 +268,12 @@ export default function RouteAndMove(props) {
         let y = Number.parseInt(xyz.y) + toCenterY
         return { x, y }
     }
+
     return (
-        <>
+        <Popover content={content}>
             <img className='car' src={Car} ref={car1} style={{ left: xyz.x, top: xyz.y, transform: `rotate(${angle}deg)` }} width="10%" alt="myCar" />
             {/* 鼠标拖动前面的小三角进行旋转 */}
             <div className='triangle' ref={triangle} style={{ left: trixyz.x, top: trixyz.y }}></div>
-        </>
+        </Popover>
     )
 }

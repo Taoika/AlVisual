@@ -13,11 +13,11 @@ const sleep = (delay) => {
 		continue;
 	}
 }
-export const Context = createContext()
+// export const Context = createContext()
 
 export default function CavClassic() {
-	const [Ncar, setNcar] = useState([])
-	const [Nlane, setNlane] = useState([])
+	const [Ncar, setNcar] = useState([1,1,1])
+	const [Nlane, setNlane] = useState([1,1,1])
 	const [Sdistance, setSdistance] = useState(0)
 	const [Speedx, setSpeedx] = useState(0)
 	const [Speedy, setSpeedy] = useState(0)
@@ -34,7 +34,7 @@ export default function CavClassic() {
 	//设置阀门，只有当move为true时小车才能动
 	const [move, setMove] = useState(false)
 	useEffect(() => {
-		if (Ncar.length > 0 && Nlane.length > 0) {
+		if (Ncar.length > 0 && Nlane.length > 0 && Nlane[0] === 0 && Nlane[0] === 0) {
 			setMove(false)
 			setCoor([{ x: 0, y: 0 }])
 			setScrCoor([{ x: 0, y: 0 }])
@@ -50,7 +50,7 @@ export default function CavClassic() {
 
 	return (
 		<div className="cavClassic">
-			<Context.Provider value={{ Ncar, Nlane }}>
+			{/* <Context.Provider value={{ Ncar, Nlane }}> */}
 				{Loading ? <div className='video'> <video src={loading} autoPlay muted={true} loop={true}></video> </div> : ''}
 				<CavSider setMove={setMove} setNcar={setNcar} setNlane={setNlane} setSdistance={setSdistance} setSpeedx={setSpeedx} setSpeedy={setSpeedy} />
 				<div className="cavClassic-right">
@@ -58,13 +58,13 @@ export default function CavClassic() {
 						<Button><Space>Del <DeleteFilled /></Space></Button>
 					</div>
 					<div className='cavClassic-right-main'>
-						{Ncar.map((value, index) => (<Car index={index} move={move} setMove={setMove} scrCoor={scrCoor.length > 10 ?
+						{Ncar.map((value, index) => (<Car module='cavClassic' index={index} move={move} setMove={setMove} scrCoor={scrCoor.length > 10 ?
 							scrCoor.map((v, i) => ({ y: v.list[index].y, x: v.list[index].x === Math.min(...v.list.map((vv, ii) => (vv.x))) ? Leftest : Leftest + (v.list[index].x - Math.min(...v.list.map((vv, ii) => (vv.x)))) }))
 							: ''} angle={angle} key={index} />))}
 						<Lane move={move} setScrCoor={setScrCoor} coor={coor} Nlane={Nlane} />
 					</div>
 				</div>
-			</Context.Provider>
+			{/* </Context.Provider> */}
 		</div>
 	)
 }

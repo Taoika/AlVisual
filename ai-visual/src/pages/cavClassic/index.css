@@ -31,7 +31,7 @@
     margin-left: -0px;
 }
 
-.cavClassic-right-lane {
+/* .cavClassic-right-lane {
     width: 100%;
 }
 
@@ -57,7 +57,7 @@
 .cavClassic-right-lane li:last-child {
     border-bottom: 3px solid white;
 
-}
+} */
 
 .cavClassic video {
     /* position: absolute; */
@@ -71,7 +71,8 @@
     position: absolute;
     z-index: 2;
     left: 200px;
-    top: 108px;
+    /* top: 108px; */
+    top: 44px;
     width: calc(100vw - 200px);
     height: calc(100vh - 44px - 64px);
     background: rgb(89, 89, 89);

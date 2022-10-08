@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
+import './index.css'
 const sleep = (delay) => {
     var start = (new Date()).getTime();
     while ((new Date()).getTime() - start < delay) {
         continue;
     }
 }
-export default function Lane({ Nlane, setScrCoor, coor, move }) {
+export default function Lane({ canMain, Nlane, setScrCoor, coor, move }) {
 
 
     // 现有小车A B C D E F 
@@ -120,9 +121,9 @@ export default function Lane({ Nlane, setScrCoor, coor, move }) {
 
 
     return (
-        <ul ref={laneContainer} className='cavClassic-right-lane'>
+        <ul ref={laneContainer} className='Lane'>
             {Nlane.map((v, i) =>
-                (<li key={i}></li>))
+                (<li key={i} className={canMain ? 'cavClustersLane' : ''}></li>))
             }
         </ul>
     )

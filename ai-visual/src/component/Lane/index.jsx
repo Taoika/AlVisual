@@ -1,3 +1,4 @@
+import { Popover } from 'antd';
 import React, { useState, useEffect, useRef } from 'react'
 import './index.css'
 const sleep = (delay) => {
@@ -123,7 +124,7 @@ export default function Lane({ canMain, Nlane, setScrCoor, coor, move }) {
     return (
         <ul ref={laneContainer} className='Lane'>
             {Nlane.map((v, i) =>
-                (<li key={i} className={canMain ? 'cavClustersLane' : ''}></li>))
+                (<Popover placement="topLeft" content={canMain ? 'Click to Set to main lane.' : ''} key={i} className='myPop'><li className={canMain ? 'cavClustersLane' : ''}></li></Popover>))
             }
         </ul>
     )

@@ -1,4 +1,4 @@
-import { Popover } from 'antd';
+import { InputNumber, Popover, Space } from 'antd';
 import React from 'react'
 import { useEffect, useState, useRef, useContext } from 'react';
 import { Context } from '../../pages/cavClassic'
@@ -18,6 +18,8 @@ export default function RouteAndMove(props) {
     // 图像位置状态
     const [xyz, setXyz] = useState({ x: 200, y: 120 });
     const [trixyz, setTrixyz] = useState({ x: 200, y: 120 });
+    const [bubxyz, setBubxyz] = useState({ x: 90, y: 70 })
+    const [show, setShow] = useState(false);
 
     // 图像旋转状态
     const [angle, setAngle] = useState(0);
@@ -31,6 +33,11 @@ export default function RouteAndMove(props) {
     const R = 70
     // 气泡内容
     const content = '来了来了';
+
+    function  handleShow(){
+        // setShow(!show);
+        setShow(0);
+    }
 
     //处理鼠标旋转图像
     const rotate = (obj, set) => {
@@ -258,6 +265,10 @@ export default function RouteAndMove(props) {
         temp.x = temp.x + R + 'px'
         temp.y = temp.y + 'px'
         setTrixyz(temp)
+        let bubTemp = toCenter(xyz);
+        bubTemp.x = bubTemp.x - 165 + 'px';
+        bubTemp.y = bubTemp.y - 65 + 'px';
+        setBubxyz(bubTemp);
     }, [xyz]);
 
     //坐标转换，从左上角转换到车的正中间(注意传回两个数字，不是px)
@@ -270,10 +281,14 @@ export default function RouteAndMove(props) {
     }
 
     return (
-        <Popover content={content}>
-            <img className='car' src={Car} ref={car1} style={{ left: xyz.x, top: xyz.y, transform: `rotate(${angle}deg)` }} width="10%" alt="myCar" />
+        <div className='routeAndMove'>
+            <img className='car' src={Car} ref={car1} style={{ left: xyz.x, top: xyz.y, transform: `rotate(${angle}deg)` }} width="10%" alt="myCar" onClick={handleShow}/>
+            <div className={show ? "bubble show" : "bubble"} style={{ left: bubxyz.x, top: bubxyz.y }}>
+                <Space>Speed:<InputNumber controls={false}></InputNumber></Space>
+                <Space>safe Distance:<InputNumber controls={false}></InputNumber></Space>
+            </div>
             {/* 鼠标拖动前面的小三角进行旋转 */}
             <div className='triangle' ref={triangle} style={{ left: trixyz.x, top: trixyz.y }}></div>
-        </Popover>
+        </div>
     )
 }

@@ -1,5 +1,5 @@
-import { DeleteFilled } from '@ant-design/icons';
-import { InputNumber, Button, Space } from 'antd'
+import { DeleteFilled, EditOutlined } from '@ant-design/icons';
+import { InputNumber, Button, Space, Popover } from 'antd'
 import React, { useState, useEffect, useRef, createContext } from 'react'
 import './index.css'
 import CavSider from '../../component/cavSider';
@@ -54,8 +54,11 @@ export default function CavClassic() {
 				{Loading ? <div className='video'> <video src={loading} autoPlay muted={true} loop={true}></video> </div> : ''}
 				<CavSider setMove={setMove} setNcar={setNcar} setNlane={setNlane} setSdistance={setSdistance} setSpeedx={setSpeedx} setSpeedy={setSpeedy} />
 				<div className="cavClassic-right">
-					<div className="cavClassic-right-del">
-						<Button><Space>Del <DeleteFilled /></Space></Button>
+					<div className="cavClassic-right-head">
+						<Space>
+							<Popover content='Click to set speed and safe distance for every car'><Button className='cavClassic-setSpeedBtn'><Space>Set<EditOutlined /></Space></Button></Popover>
+							<Button><Space>Del <DeleteFilled /></Space></Button>
+						</Space>
 					</div>
 					<div className='cavClassic-right-main'>
 						{Ncar.map((value, index) => (<Car module='cavClassic' index={index} move={move} setMove={setMove} scrCoor={scrCoor.length > 10 ?

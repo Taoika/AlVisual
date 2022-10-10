@@ -36,7 +36,7 @@ export default function CavEvent() {
 	//设置阀门，只有当move为true时小车才能动
 	const [move, setMove] = useState(false)
 	useEffect(() => {
-
+		console.log(Ncar.length, Nlane.length, Nlane[0], Nlane[0]);
 		if (Ncar.length > 0 && Nlane.length > 0 && Nlane[0] === 0 && Nlane[0] === 0) {
 			setMove(false)
 			setCoor([{ x: 0, y: 0 }])

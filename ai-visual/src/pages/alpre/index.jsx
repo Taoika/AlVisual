@@ -126,8 +126,10 @@ export default function AlPre() {
     // 获取总帧数
     useEffect(()=>{
         axiosGet(`http://qgailab.com/algorithmVisualization/api/point/quantity?tableName=${model}_${initState}_${density}`)
+        // axiosGet(`http://192.168.10.1/cgi-bin/main.cgi?type=0&point=1&status=10&value=10`)
         .then(
             response=>{
+                console.log(response);
                 if(response.data.code===200){
                     // console.log(response.data.data);
                     setAllFrames(response.data.data-1);

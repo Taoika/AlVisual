@@ -17,17 +17,11 @@ export default function CavSider({ setRun, run, fixLane, setMove, setNcar, setNl
         // 车道数量 状态
         const [LaneNum,setLaneNum] = useState(fixLane ? 2 : 3);
 
-        // 点击提交按钮
+        // 点击设置按钮
         const handleSet = () => {
-                // console.log(Ncar.current, Nlane.current, Sdistance.current, Speedx.current, Speedy.current);
-                // data.map((v, i) => {
-                //         console.log(v.current);
-                // })
-
-
                 //数组是为了生成对应的li
                 setMove(false)
-                //清楚所有定时器
+                //清除所有定时器
                 for (let j = 0; j < 1000; j++) {
                         clearInterval(j)
                 }
@@ -47,7 +41,6 @@ export default function CavSider({ setRun, run, fixLane, setMove, setNcar, setNl
                 setSpeedx(Speedx.current.value)
 
                 setSpeedy(Speedy.current.value)
-
         }
 
         // 设置默认值
@@ -65,9 +58,10 @@ export default function CavSider({ setRun, run, fixLane, setMove, setNcar, setNl
             setLaneNum(Nlane.current.value);
         }
 
-        // 提交
+        // 点击提交按钮
         function submit(){
-            console.log('触发了提交按钮');
+            handleSet();
+            run++;  
             setRun(run++);
         }
 
@@ -82,14 +76,14 @@ export default function CavSider({ setRun, run, fixLane, setMove, setNcar, setNl
                                         Num of Lane <InputNumber ref={Nlane} max={4} min={1} defaultValue={fixLane ? 2 : 3} onBlur={handleLaneNum} onPressEnter={handleLaneNum} disabled={fixLane ? true : false}></InputNumber>
                                 </div>
                                 <div className="cav-sider-safe">
-                                        Safe Distance <InputNumber ref={Sdistance} defaultValue={110} min={110} max={200}></InputNumber>
+                                        Safe Distance <InputNumber ref={Sdistance} defaultValue={110} min={110} max={200} disabled={true}></InputNumber>
                                 </div>
                                 <div className="cav-sider-speed">
                                         <div className="cav-sider-speed-title">Speed</div>
                                         <div className="cav-sider-speed-input">
                                                 <Space direction="vertical">
-                                                        <Space>x <InputNumber ref={Speedx} defaultValue={5} min={1}></InputNumber></Space> 
-                                                        <Space>y <InputNumber ref={Speedy} defaultValue={5} min={1}></InputNumber></Space>
+                                                        <Space>x <InputNumber ref={Speedx} defaultValue={0} min={0} disabled={true}></InputNumber></Space> 
+                                                        <Space>y <InputNumber ref={Speedy} defaultValue={0} min={0} disabled={true}></InputNumber></Space>
                                                 </Space>
                                         </div>
                                 </div>

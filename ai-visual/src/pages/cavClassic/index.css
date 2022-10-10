@@ -12,7 +12,11 @@
     height: 100%;
 }
 
-.cavClassic-right-del {
+.cavClassic-setSpeedBtn {
+    width: 75px;
+}
+
+.cavClassic-right-head {
     height: 44px;
     width: calc(100vw - 200px);
     padding: 0 40px 0 0;
@@ -30,34 +34,6 @@
     height: calc(100vh - 44px - 64px);
     margin-left: -0px;
 }
-
-/* .cavClassic-right-lane {
-    width: 100%;
-}
-
-.cavClassic-right-lane li {
-    width: 100%;
-    height: calc(calc(100vh - 44px - 64px) / 5);
-    background-image: linear-gradient(to right,
-            #ededed 0%,
-            #ededed 50%,
-            transparent 50%);
-    background-size: 120px 3px;
-    background-repeat: repeat-x;
-
-
-}
-
-.cavClassic-right-lane li:first-child {
-    background-image: none;
-    border-top: 3px solid white;
-
-}
-
-.cavClassic-right-lane li:last-child {
-    border-bottom: 3px solid white;
-
-} */
 
 .cavClassic video {
     /* position: absolute; */

@@ -1,0 +1,7 @@
+.Line {
+    position: absolute;
+    width: 100%;
+    border-bottom: 2px solid rgba(198, 55, 55, 1);
+    cursor: pointer;
+    z-index: 0;
+}

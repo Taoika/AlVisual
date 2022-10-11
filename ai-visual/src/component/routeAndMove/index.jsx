@@ -35,8 +35,7 @@ export default function RouteAndMove(props) {
     const content = '来了来了';
 
     function  handleShow(){
-        // setShow(!show);
-        setShow(0);
+        setShow(!show);
     }
 
     //处理鼠标旋转图像
@@ -266,8 +265,8 @@ export default function RouteAndMove(props) {
         temp.y = temp.y + 'px'
         setTrixyz(temp)
         let bubTemp = toCenter(xyz);
-        bubTemp.x = bubTemp.x - 165 + 'px';
-        bubTemp.y = bubTemp.y - 65 + 'px';
+        bubTemp.x = `calc(${bubTemp.x}px - 12vw)`;
+        bubTemp.y = `calc(${bubTemp.y}px - 5vw)`;
         setBubxyz(bubTemp);
     }, [xyz]);
 
@@ -282,7 +281,7 @@ export default function RouteAndMove(props) {
 
     return (
         <div className='routeAndMove'>
-            <img className='car' src={Car} ref={car1} style={{ left: xyz.x, top: xyz.y, transform: `rotate(${angle}deg)` }} width="10%" alt="myCar" onClick={handleShow}/>
+            <img className='car' src={Car} ref={car1} onDoubleClick={handleShow} style={{ left: xyz.x, top: xyz.y, transform: `rotate(${angle}deg)` }} width="10%" alt="myCar"/>
             <div className={show ? "bubble show" : "bubble"} style={{ left: bubxyz.x, top: bubxyz.y }}>
                 <Space>Speed:<InputNumber controls={false}></InputNumber></Space>
                 <Space>safe Distance:<InputNumber controls={false}></InputNumber></Space>

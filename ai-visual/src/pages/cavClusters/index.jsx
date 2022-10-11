@@ -30,6 +30,8 @@ export default function CavClusters() {
 	const [coor, setCoor] = useState([{ x: 0, y: 0 }])
 	//loading
 	const [Loading, setLoading] = useState(false)
+	// run
+	const [run,setRun] = useState(0);
 
 	//设置阀门，只有当move为true时小车才能动
 	const [move, setMove] = useState(false)
@@ -42,7 +44,7 @@ export default function CavClusters() {
 			axiosGet('http://qgailab.com/algorithmVisualization/api/car?tableName=cavtest&polishId=true&amount=300&pieces=15').
 				then(response => { setCoor(response.data.data); setLoading(false); setMove(true) })
 		}
-	}, [Ncar, Nlane])
+	}, [run])
 
 	useEffect(() => {
 		setAngle({ x: Speedx, y: Speedy })
@@ -52,7 +54,7 @@ export default function CavClusters() {
 		<div className="cavClusters">
 			{/* <Context.Provider value={{ Ncar, Nlane }}> */}
 				{Loading ? <div className='video'> <video src={loading} autoPlay muted={true} loop={true}></video> </div> : ''}
-				<CavSider setMove={setMove} setNcar={setNcar} setNlane={setNlane} setSdistance={setSdistance} setSpeedx={setSpeedx} setSpeedy={setSpeedy} />
+				<CavSider setRun={setRun} run={run} setMove={setMove} setNcar={setNcar} setNlane={setNlane} setSdistance={setSdistance} setSpeedx={setSpeedx} setSpeedy={setSpeedy} />
 				<div className="cavClusters-right">
 					<div className="cavClusters-right-del">
 						<Button><Space>Del <DeleteFilled /></Space></Button>

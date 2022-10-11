@@ -7,8 +7,7 @@ const sleep = (delay) => {
         continue;
     }
 }
-export default function Lane({ canMain, Nlane, setScrCoor, coor, move }) {
-
+export default function Lane({ canMain, Nlane, setScrCoor, coor, move, setSysLine, line }) {
 
     // 现有小车A B C D E F 
     // y: 0~140 x: 0~3.0
@@ -31,7 +30,7 @@ export default function Lane({ canMain, Nlane, setScrCoor, coor, move }) {
     // 坐标系所在容器
     const laneContainer = useRef(null);
 
-    // 坐标转换 由屏幕坐标转换为无单位的坐标系坐标 参数: 坐标轴所在对象 屏幕坐标 坐标系坐标的最大值 set
+    // 坐标转换 由屏幕坐标转换为无单位的坐标系坐标 参数: 坐标轴所在对象 屏幕坐标数组 坐标系坐标的最大值 set
     // const coorTransform = (obj, coor, max, set) => {
     //     // obj宽度
     //     const clientWidth = obj.clientWidth;
@@ -86,11 +85,16 @@ export default function Lane({ canMain, Nlane, setScrCoor, coor, move }) {
 
             })
             set(coor)
+            console.log('coor->',coor);
             // set(sysCoor.map((i) => {
             //     return { x: i.x + offsetLeft, y: offsetTop + clientHeight - i.y };
             // }))
         }
-
+        else if(coor.length = 1){
+            let x = (coor[0].x - offsetLeft) * max.x / obj.clientWidth;
+            let y = (maxY - (coor[0].y - offsetTop)) * max.y / maxY;
+            set([{x: x,y: y}]);
+        }
     }
 
     // 获取可设置的x y屏幕坐标范围(px) 参数: 坐标轴所在对象 set
@@ -119,7 +123,11 @@ export default function Lane({ canMain, Nlane, setScrCoor, coor, move }) {
         }
     }, [Nlane, coor]);
 
-
+    useEffect(()=>{
+        if(line && line[0].x != 'undefined' && laneContainer){
+            treCoorTransform(laneContainer.current, line, max, setSysLine);
+        }
+    },[line]);
 
     return (
         <ul ref={laneContainer} className='Lane'>

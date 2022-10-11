@@ -61,7 +61,7 @@
 
 .cavEvent video {
     /* position: absolute; */
-    z-index: 2;
+    z-index: 3;
     width: calc(100vw - 200px);
     height: calc(100vh - 44px - 64px);
     background: rgb(89, 89, 89);
@@ -69,7 +69,7 @@
 
 .cavEvent .video {
     position: absolute;
-    z-index: 2;
+    z-index: 10;
     left: 200px;
     /* top: 108px; */
     top: 44px;

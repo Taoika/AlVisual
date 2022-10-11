@@ -19,11 +19,13 @@ const sleep = (delay) => {
 // export const Context = createContext()
 
 export default function CavClassic() {
-	const [Ncar, setNcar] = useState([1,1,1])
-	const [Nlane, setNlane] = useState([1,1,1])
+	const [Ncar, setNcar] = useState([])
+	const [Nlane, setNlane] = useState([])
 	const [Sdistance, setSdistance] = useState(0)
-	const [Speedx, setSpeedx] = useState(0)
-	const [Speedy, setSpeedy] = useState(0)
+	const [speedxy, setSpeedxy] = useState([])
+	const [initPosition,setInitPosition]=useState([])
+	const [speed, setSpeed] = useState(6);
+	const [dis, setDis] = useState(110);
 	const [angle, setAngle] = useState({ x: 0, y: 0 });
 	// 收敛线的屏幕坐标
 	const [line, setLine] = useState([{ x: 0, y: 155 }]);
@@ -39,25 +41,79 @@ export default function CavClassic() {
 	const [Loading, setLoading] = useState(false)
 	// run
 	const [run,setRun] = useState(0);
-
 	//设置阀门，只有当move为true时小车才能动
 	const [move, setMove] = useState(false)
 	useEffect(() => {
 		if (Ncar.length > 0 && Nlane.length > 0 && Nlane[0] === 0 && Nlane[0] === 0) {
+			console.log(initPosition,'initPosition');
+			let temp = initPosition
+			let max = {x:100,y:100}
+			let Lane = document.querySelector('.Lane')
+			 // obj宽度
+			 const clientWidth = Lane.clientWidth / 13;
+			 // obj长度
+			 const clientHeight = Lane.clientHeight;
+			 // obj左边距
+			 const offsetLeft = Lane.offsetLeft;
+			 // obj上边距
+			 const offsetTop = Lane.offsetTop;
+			 // 最大x
+			 const maxX = clientWidth;
+			 // 最大y
+			 const maxY = clientHeight;
+				 let maxy = 100
+				 temp.map((j) => {
+					j.x = (j.x - offsetLeft) * max.x / clientWidth;
+					j.y = (maxY - (j.y - offsetTop)) * max.y / maxY;
+				 })
+				 console.log(temp,'temp');
+				 console.log(speedxy,'speedxy');
+				 let data = {
+							"cav_y": sysLine[0].y,
+							"cav_x_x_list": 
+								temp.map((v,i)=>(v.x))
+							,
+							"cav_x_y_list": 
+								temp.map((v,i)=>(v.y))
+							,
+							"cav_v_x_list": 
+								temp.map((v,i)=>(v.x))
+
+								// speedxy[0].x?speedxy[0].x:0,
+								// speedxy[1].x?speedxy[1].x:0,
+								// speedxy[2].x?speedxy[2].x:0
+							,
+							"cav_v_y_list": 
+								temp.map((v,i)=>(v.y))
+								// speedxy[0].y?speedxy[0].y:0,
+								// speedxy[1].y?speedxy[1].y:0,
+								// speedxy[2].y?speedxy[2].y:0
+							,
+							"cav_r_x": 5,
+							"cav_r_v": 6
+						}
+						console.log(data,'tata');
+						let url = 'http://10.21.71.79:8000/model/1/easy-task';
 			setMove(false)
 			setCoor([{ x: 0, y: 0 }])
 			setScrCoor([{ x: 0, y: 0 }])
 			setLoading(true)
-			axiosGet('http://qgailab.com/algorithmVisualization/api/car?tableName=cavtest&polishId=true&amount=300&pieces=15').
-				then(response => { 
-					// console.log(response.data.data);
-					setCoor(response.data.data);
-					setLoading(false); 
-					setMove(true) 
-				})
+			axiosJSONPost(url,data).
+						then(response => { 
+							console.log(response.data.data.location,response.data.data.speed);
+							let data = []
+							response.data.data.location.map((v,i)=>{
+								// data.push({list:[{x:v[0][0],y:v[1][0]},{x:v[0][1],y:v[1][1]},{x:v[0][2],y:v[1][2]}]})
+								data.push({list:v[0].map((value,index)=>({x:v[0][index],y:v[1][index]}))})
+							})
+							console.log(data,'data');
+							setCoor(data); 
+							setLoading(false); 
+							setMove(true) 
+						})
+				
 		}
 	}, [run])
-
 	// useEffect(() => {
 	// 	let data = {
 	// 		"cav_y": 65,
@@ -104,10 +160,13 @@ export default function CavClassic() {
 	// 	}
 	// }, [run])
 
-	useEffect(() => {
-		setAngle({ x: Speedx, y: Speedy })
-	}, [Speedx, Speedy])
+	// 获取小车的旋转角度和安全距离
+	// useEffect(() => {
+	// 	console.log(Speedx, Speedy,dis,speed);
+	// 	// setAngle({ x: Speedx, y: Speedy })
+	// }, [Speedx, Speedy,dis,speed])
 
+	// 获取收敛线的坐标
 	useEffect(()=>{
 		// console.log('sysLine',sysLine[0].x,sysLine[0].y);
 	},[sysLine]);
@@ -117,16 +176,16 @@ export default function CavClassic() {
 		<div className="cavClassic">
 			{/* <Context.Provider value={{ Ncar, Nlane }}> */}
 				{Loading ? <div className='video'> <video src={loading} autoPlay muted={true} loop={true}></video> </div> : ''}
-				<CavSider setRun={setRun} run={run} setMove={setMove} setNcar={setNcar} setNlane={setNlane} setSdistance={setSdistance} setSpeedx={setSpeedx} setSpeedy={setSpeedy} />
+				<CavSider setInitPosition={setInitPosition} setSpeedxy={setSpeedxy} setRun={setRun} run={run} setMove={setMove} setNcar={setNcar} setNlane={setNlane} setSdistance={setSdistance}  />
 				<div className="cavClassic-right">
 					<div className="cavClassic-right-head">
 							<Button><Space>Del <DeleteFilled /></Space></Button>
 					</div>
 					<div className='cavClassic-right-main'>
-						{Ncar.map((value, index) => (<Car module='cavClassic' index={index} move={move} setMove={setMove} scrCoor={scrCoor.length > 10 ?
+						{Ncar.map((value, index) => (<Car speedxy={speedxy} setSpeedxy={setSpeedxy}  initPosition={initPosition} setInitPosition={setInitPosition} module='cavClassic' index={index} move={move} setMove={setMove} scrCoor={scrCoor.length > 10 ?
 							scrCoor.map((v, i) => ({ y: v.list[index].y, x: v.list[index].x === Math.min(...v.list.map((vv, ii) => (vv.x))) ? Leftest : Leftest + (v.list[index].x - Math.min(...v.list.map((vv, ii) => (vv.x)))) }))
-							: ''} angle={angle} key={index} />))}
-						<Lane move={move} setScrCoor={setScrCoor} coor={coor} Nlane={Nlane} setSysLine={setSysLine} line={line}/>
+							: ''} angle={angle} key={index}  setDis={setDis} setSpeed={setSpeed}/>))}
+						<Lane  move={move} setScrCoor={setScrCoor} coor={coor} Nlane={Nlane} setSysLine={setSysLine} line={line}/>
 						<Line setLine={setLine}/>
 					</div>
 				</div>

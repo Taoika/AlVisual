@@ -35,17 +35,19 @@ export default function CavClusters() {
 
 	//设置阀门，只有当move为true时小车才能动
 	const [move, setMove] = useState(false)
+	const [initPosition,setInitPosition]=useState([{},{},{}])
 	useEffect(() => {
 		if (Ncar.length > 0 && Nlane.length > 0 && Nlane[0] === 0 && Nlane[0] === 0) {
+			
 			setMove(false)
 			setCoor([{ x: 0, y: 0 }])
 			setScrCoor([{ x: 0, y: 0 }])
 			setLoading(true)
 			axiosGet('http://qgailab.com/algorithmVisualization/api/car?tableName=cavtest&polishId=true&amount=300&pieces=15').
-				then(response => { setCoor(response.data.data); setLoading(false); setMove(true) })
+				then(response => { setCoor(response.data.data);console.log(response.data.data); setLoading(false); setMove(true) })
 		}
 	}, [run])
-
+	
 	useEffect(() => {
 		setAngle({ x: Speedx, y: Speedy })
 	}, [Speedx, Speedy])
@@ -60,7 +62,7 @@ export default function CavClusters() {
 						<Button><Space>Del <DeleteFilled /></Space></Button>
 					</div>
 					<div className='cavClusters-right-main'>
-						{Ncar.map((value, index) => (<Car notRotate='true' module='cavClusters' index={index} move={move} setMove={setMove} scrCoor={scrCoor.length > 10 ?
+						{Ncar.map((value, index) => (<Car initPosition={initPosition} setInitPosition={setInitPosition} notRotate='true' module='cavClusters' index={index} move={move} setMove={setMove} scrCoor={scrCoor.length > 10 ?
 							scrCoor.map((v, i) => ({ y: v.list[index].y, x: v.list[index].x === Math.min(...v.list.map((vv, ii) => (vv.x))) ? Leftest : Leftest + (v.list[index].x - Math.min(...v.list.map((vv, ii) => (vv.x)))) }))
 							: ''} angle={angle} key={index} />))}
 						<Lane canMain='true' move={move} setScrCoor={setScrCoor} coor={coor} Nlane={Nlane} />

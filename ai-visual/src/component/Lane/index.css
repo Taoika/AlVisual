@@ -27,4 +27,5 @@
 /* 多编队 */
 .cavClustersLane:hover {
     background-color: rgba(135, 135, 135, 1);
+    cursor: pointer;
 }

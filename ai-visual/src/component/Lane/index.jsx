@@ -7,7 +7,7 @@ const sleep = (delay) => {
         continue;
     }
 }
-export default function Lane({ canMain, Nlane, setScrCoor, coor, move, setSysLine, line }) {
+export default function Lane({canMain, Nlane, setScrCoor, coor, move, setSysLine, line }) {
 
     // 现有小车A B C D E F 
     // y: 0~140 x: 0~3.0
@@ -69,6 +69,7 @@ export default function Lane({ canMain, Nlane, setScrCoor, coor, move, setSysLin
         const maxX = clientWidth;
         // 最大y
         const maxY = clientHeight;
+        
         if (coor.length > 10) {
             // let maxy = Math.max(...coor[0].list.map(v => (v.y))) + 10
             let maxy = 100
@@ -85,12 +86,29 @@ export default function Lane({ canMain, Nlane, setScrCoor, coor, move, setSysLin
 
             })
             set(coor)
-            console.log('coor->',coor);
+            console.log('coor2->',coor);
             // set(sysCoor.map((i) => {
             //     return { x: i.x + offsetLeft, y: offsetTop + clientHeight - i.y };
             // }))
         }
-        else if(coor.length = 1){
+    }
+
+    // 屏幕坐标转换成坐标轴坐标
+    const treCoorTransform2 = (obj, coor, max, set) => {
+        // obj宽度
+        const clientWidth = obj.clientWidth / 13;
+        // obj长度
+        const clientHeight = obj.clientHeight;
+        // obj左边距
+        const offsetLeft = obj.offsetLeft;
+        // obj上边距
+        const offsetTop = obj.offsetTop;
+        // 最大x
+        const maxX = clientWidth;
+        // 最大y
+        const maxY = clientHeight;
+        // 这个是收敛线的坐标转换
+        if(coor.length = 1){
             let x = (coor[0].x - offsetLeft) * max.x / obj.clientWidth;
             let y = (maxY - (coor[0].y - offsetTop)) * max.y / maxY;
             set([{x: x,y: y}]);
@@ -110,7 +128,6 @@ export default function Lane({ canMain, Nlane, setScrCoor, coor, move, setSysLin
 
     //     set({ minX: offsetLeft, minY: 35, maxX: offsetLeft + clientWidth, maxY: clientHeight });
     // }
-
     useEffect(() => {
         if (laneContainer && coor.length > 10 && move) {
             // getExtre(laneContainer.current, setExtre);
@@ -125,7 +142,7 @@ export default function Lane({ canMain, Nlane, setScrCoor, coor, move, setSysLin
 
     useEffect(()=>{
         if(line && line[0].x != 'undefined' && laneContainer){
-            treCoorTransform(laneContainer.current, line, max, setSysLine);
+            treCoorTransform2(laneContainer.current, line, max, setSysLine);
         }
     },[line]);
 

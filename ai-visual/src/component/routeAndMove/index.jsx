@@ -20,6 +20,8 @@ export default function RouteAndMove(props) {
     const [trixyz, setTrixyz] = useState({ x: 200, y: 120 });
     const [bubxyz, setBubxyz] = useState({ x: 90, y: 70 })
     const [show, setShow] = useState(false);
+    const [carP,setCarP] = useState({ x: 0, y: 0 })
+    const [carAngle,setCarAngle] = useState(0);
 
     // 图像旋转状态
     const [angle, setAngle] = useState(0);
@@ -29,10 +31,12 @@ export default function RouteAndMove(props) {
     const car1 = useRef(null);
     //小三角
     const triangle = useRef(null);
+    // 速度大小所在输入框
+    const speedRef = useRef(null);
+    // 安全距离所在输入框
+    const disRef = useRef(null);
     //半径R
     const R = 70
-    // 气泡内容
-    const content = '来了来了';
 
     function  handleShow(){
         setShow(!show);
@@ -61,11 +65,21 @@ export default function RouteAndMove(props) {
                 var top = event2.clientY - ot;
                 var car = car1.current
                 let o = toCenter({ x: car.offsetLeft, y: car.offsetTop })
+                setCarP(o);
                 if ((left - o.x) !== 0) {
                     let angle = Math.atan((top - o.y) / (left - o.x))
-                    angle = angle > 90 ? -angle : angle
-                    let tempY = R * Math.sin(angle)
-                    let tempX = R * Math.cos(angle)
+                    setCarAngle(angle);
+                    // angle = angle > 90 ? -angle : angle
+                    // console.log(speedRef.current?.value);
+                    let tempY = speedRef.current?.value * Math.sin(angle)
+                    let tempX = speedRef.current?.value * Math.cos(angle)
+                    let speed = props?.speedxy
+                    speed[props.index].x=event2.clientX<carP.x?-tempX:tempX
+                    speed[props.index].y=event2.clientX>carP.x?-tempY:tempY
+                    props.setSpeedxy(speed)
+                    // props?.setSpeedx(event2.clientX<o.x?-tempX:tempX);
+                    // props?.setSpeedy(event2.clientX>o.x?-tempY:tempY);
+                    // console.log(event2.clientX>o.x?-tempY:tempY, event2.clientX<o.x?-tempX:tempX,'y','x');
                     let x, y
                     if (left < o.x) {
                         x = o.x - tempX;
@@ -76,7 +90,6 @@ export default function RouteAndMove(props) {
                     }
                     set({ x, y });
                     angle = angle * 57
-                    // console.log(angle);
                     left < o.x ? setAngle(180 + angle) : setAngle(angle)
 
                 }
@@ -141,6 +154,15 @@ export default function RouteAndMove(props) {
 
             // 绑定一个鼠标松开事件
             document.onmouseup = (e) => {
+                if(props.initPosition){
+                    let cars = document.querySelectorAll('.car')
+                    let car = cars[props.index]
+                    let position = props.initPosition
+                    position[props.index].x=car.offsetLeft
+                    position[props.index].y=car.offsetTop
+                    console.log(props.initPosition,position,'position');
+                    props.setInitPosition(position)
+                }
                 // 取消鼠标移动事件
                 if (lastLeft) {
                     coorTransform(lastLeft, lastTop, setXyz)
@@ -258,15 +280,17 @@ export default function RouteAndMove(props) {
         })
     }, [props.angle]);
 
-    //让小三角跟着小车移动
+    //让小三角和气泡跟着小车移动
     useEffect(() => {
         let temp = toCenter(xyz)
         temp.x = temp.x + R + 'px'
         temp.y = temp.y + 'px'
         setTrixyz(temp)
         let bubTemp = toCenter(xyz);
-        bubTemp.x = `calc(${bubTemp.x}px - 12vw)`;
-        bubTemp.y = `calc(${bubTemp.y}px - 5vw)`;
+        // bubTemp.x = `calc(${bubTemp.x}px - 8vw)`;
+        // bubTemp.y = `calc(${bubTemp.y}px - 5vw)`;
+        bubTemp.x = `calc(${bubTemp.x}px - 170px)`;
+        bubTemp.y = `calc(${bubTemp.y}px - 70px)`;
         setBubxyz(bubTemp);
     }, [xyz]);
 
@@ -279,12 +303,30 @@ export default function RouteAndMove(props) {
         return { x, y }
     }
 
+    function handleSet(){
+        props?.setDis(disRef.current?.value);
+        props?.setSpeed(speedRef.current?.value);
+        // 绑定鼠标移动事件
+        document.onmousemove = (event2) => {
+            event2 = event2 || window.event;
+            let tempY = speedRef.current?.value * Math.sin(angle)
+            let tempX = speedRef.current?.value * Math.cos(angle)
+            let speed = props?.speedxy
+            speed[props.index].x=event2.clientX<carP.x?-tempX:tempX
+            speed[props.index].y=event2.clientX>carP.x?-tempY:tempY
+            props.setSpeedxy(speed)
+            // props?.setSpeedx(event2.clientX<carP.x?-tempX:tempX);
+            // props?.setSpeedy(event2.clientX>carP.x?-tempY:tempY);
+            document.onmousemove = null;
+        }
+    }
+
     return (
         <div className='routeAndMove'>
-            <img className='car' src={Car} ref={car1} onDoubleClick={handleShow} style={{ left: xyz.x, top: xyz.y, transform: `rotate(${angle}deg)` }} width="10%" alt="myCar"/>
+            <img className='car' src={Car} ref={car1} onDoubleClick={handleShow} style={{ left: xyz.x, top: xyz.y, transform: `rotate(${angle}deg)` }} width='150px'  alt="myCar"/>
             <div className={show ? "bubble show" : "bubble"} style={{ left: bubxyz.x, top: bubxyz.y }}>
-                <Space>Speed:<InputNumber controls={false}></InputNumber></Space>
-                <Space>safe Distance:<InputNumber controls={false}></InputNumber></Space>
+                <Space>Speed:<InputNumber ref={speedRef} controls={false} onChange={handleSet} defaultValue={6}></InputNumber></Space>
+                <Space>safe Distance:<InputNumber ref={disRef} controls={false} onChange={handleSet} defaultValue={115}></InputNumber></Space>
             </div>
             {/* 鼠标拖动前面的小三角进行旋转 */}
             <div className='triangle' ref={triangle} style={{ left: trixyz.x, top: trixyz.y }}></div>

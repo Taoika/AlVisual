@@ -6,7 +6,7 @@
     position: absolute;
     cursor: pointer;
     /* transition: all 3s; */
-    z-index: 3;
+    z-index: 1;
 }
 
 .lefttest {
@@ -36,6 +36,7 @@
     height: 35px;
     position: absolute;
     border-radius: 30px;
+    background-color: #fff;
 }
 
 .triangle:hover {

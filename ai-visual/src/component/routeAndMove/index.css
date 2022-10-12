@@ -36,7 +36,7 @@
     height: 35px;
     position: absolute;
     border-radius: 30px;
-    background-color: #fff;
+    /* background-color: #fff; */
 }
 
 .triangle:hover {
@@ -55,7 +55,7 @@
     padding: 7px 5px 0 5px;
     border-radius: 6px;
     background-color: rgba(237, 90, 101, 1);
-    box-shadow: 3px 3px 3px 1px rgba(0,0,0,.1);
+    box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, .1);
     color: #fff;
     z-index: 4;
     opacity: 0;
@@ -83,7 +83,7 @@
     height: 0px;
     border: 10px solid transparent;
     border-top: 10px solid rgba(237, 90, 101, 1);
-    transform: translate(50%,0);
+    transform: translate(50%, 0);
 }
 
 .show {

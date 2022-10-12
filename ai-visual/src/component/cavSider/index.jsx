@@ -1,39 +1,43 @@
 import { InputNumber, Button, Space } from 'antd'
-import React,{ useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import './index.css'
 
-export default function CavSider({ setRun, run, fixLane, setMove, setNcar, setNlane, setSdistance,setSpeedxy,setInitPosition }) {
+export default function CavSider({ setRefresh, refresh, setRun, run, fixLane, setMove, setNcar, setNlane, setSdistance, setSpeedxy, setInitPosition }) {
         // console.log('setRun->',setRun);
         const Ncar = React.useRef()
         // 车道数量
         const Nlane = React.useRef()
-        // 安全距离
+        // 安全距离     
         const Sdistance = React.useRef()
+
         // x方向速度大小
         // const Speedx = React.useRef()
         // y放行速度大小
         // const Speedy = React.useRef()
-
         // 车道数量 状态
-        const [LaneNum,setLaneNum] = useState(fixLane ? 2 : 3);
+        const [LaneNum, setLaneNum] = useState(fixLane ? 2 : 3);
 
         // 点击设置按钮
         const handleSet = () => {
-                //数组是为了生成对应的li
-                setMove(false)
                 //清除所有定时器
                 for (let j = 0; j < 1000; j++) {
                         clearInterval(j)
                 }
-                let arr = []
-                let arrt= []
 
+                setRefresh(true)
+
+                //数组是为了生成对应的li
+                setMove(false)
+                let arr = []
+                let arrt = []
+                let arrs = []
                 while (Ncar.current.value--) {
                         arr.push(0)
-                        arrt.push({x:200,y:0})
+                        arrt.push({ x: 200, y: 0 })
+                        arrs.push({ x: 0, y: 0 })
                 }
                 setNcar(arr)
-                setSpeedxy(arrt)
+                setSpeedxy(arrs)
                 setInitPosition(arrt)
                 let arr1 = []
                 while (Nlane.current.value--) {
@@ -47,49 +51,56 @@ export default function CavSider({ setRun, run, fixLane, setMove, setNcar, setNl
 
                 // setSpeedy(Speedy.current.value)
         }
+        const onChange = () => {
+                //清除所有定时器
+                for (let j = 0; j < 1000; j++) {
+                        clearInterval(j)
+                }
+                setRefresh(false)
+        }
 
         // 设置默认值
-        function handleDefault(){
-            Ncar.current.value = 3;
-            Nlane.current.value = 3;
-            Sdistance.current.value = 110;
-        //     Speedx.current.value = 5;
-        //     Speedy.current.value = 5;
+        function handleDefault() {
+                Ncar.current.value = 3;
+                Nlane.current.value = 3;
+                Sdistance.current.value = 110;
+                //     Speedx.current.value = 5;
+                //     Speedy.current.value = 5;
         }
 
         // 处理车道上限
-        function handleLaneNum(){
-            Nlane.current.blur();
-            setLaneNum(Nlane.current.value);
+        function handleLaneNum() {
+                Nlane.current.blur();
+                setLaneNum(Nlane.current.value);
         }
 
         // 点击提交按钮
-        function submit(){
-        //     handleSet();
-         //数组是为了生成对应的li
-         setMove(false)
-         //清除所有定时器
-         for (let j = 0; j < 1000; j++) {
-                 clearInterval(j)
-         }
-         let arr = []
-         let arrt= []
+        function submit() {
+                //     handleSet();
+                //数组是为了生成对应的li
+                setMove(false)
+                //清除所有定时器
+                for (let j = 0; j < 1000; j++) {
+                        clearInterval(j)
+                }
+                let arr = []
+                let arrt = []
 
-         while (Ncar.current.value--) {
-                 arr.push(0)
-                 arrt.push({x:200,y:0})
-         }
-         setNcar(arr)
-         let arr1 = []
-         while (Nlane.current.value--) {
-                 arr1.push(0)
-         }
-         setNlane(arr1)
+                while (Ncar.current.value--) {
+                        arr.push(0)
+                        arrt.push({ x: 200, y: 0 })
+                }
+                setNcar(arr)
+                let arr1 = []
+                while (Nlane.current.value--) {
+                        arr1.push(0)
+                }
+                setNlane(arr1)
 
-         setSdistance(Sdistance.current.value)
+                setSdistance(Sdistance.current.value)
 
-            run++;  
-            setRun(run++);
+                run++;
+                setRun(run++);
         }
 
         return (
@@ -97,7 +108,7 @@ export default function CavSider({ setRun, run, fixLane, setMove, setNcar, setNl
                         <h2 className="cav-sider-head">Option</h2>
                         <div className="cav-sider-body">
                                 <div className="cav-sider-carNum">
-                                        Num of Car <InputNumber ref={Ncar} defaultValue={3}></InputNumber>
+                                        Num of Car <InputNumber onChange={onChange} ref={Ncar} defaultValue={3}></InputNumber>
                                 </div>
                                 <div className="cav-sider-laneNum">
                                         Num of Lane <InputNumber ref={Nlane} max={4} min={1} defaultValue={fixLane ? 2 : 3} onBlur={handleLaneNum} onPressEnter={handleLaneNum} disabled={fixLane ? true : false}></InputNumber>

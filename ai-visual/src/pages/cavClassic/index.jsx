@@ -17,13 +17,13 @@ const sleep = (delay) => {
 	}
 }
 // export const Context = createContext()
-
+export const Context = createContext()
 export default function CavClassic() {
 	const [Ncar, setNcar] = useState([])
 	const [Nlane, setNlane] = useState([])
 	const [Sdistance, setSdistance] = useState(0)
 	const [speedxy, setSpeedxy] = useState([])
-	const [initPosition,setInitPosition]=useState([])
+	const [initPosition, setInitPosition] = useState([])
 	const [speed, setSpeed] = useState(6);
 	const [dis, setDis] = useState(110);
 	const [angle, setAngle] = useState({ x: 0, y: 0 });
@@ -31,87 +31,89 @@ export default function CavClassic() {
 	const [line, setLine] = useState([{ x: 0, y: 155 }]);
 	// 收敛线的坐标轴坐标
 	const [sysLine, setSysLine] = useState([{ x: 0, y: 0 }]);
+	const [refresh, setRefresh] = useState(false)
 	//最左边车辆的坐标
-	const Leftest = 400
+	const [Leftest, setLeftest] = useState(400)
 	//屏幕坐标
 	const [scrCoor, setScrCoor] = useState([{ x: 0, y: 0 }])
 	//坐标系坐标
 	const [coor, setCoor] = useState([{ x: 0, y: 0 }])
 	//loading
-	const [Loading, setLoading] = useState(false)
+	// const [Loading, setLoading] = useState(false)
 	// run
-	const [run,setRun] = useState(0);
+	const [run, setRun] = useState(0);
 	//设置阀门，只有当move为true时小车才能动
 	const [move, setMove] = useState(false)
 	useEffect(() => {
 		if (Ncar.length > 0 && Nlane.length > 0 && Nlane[0] === 0 && Nlane[0] === 0) {
-			console.log(initPosition,'initPosition');
+			console.log(initPosition, 'initPosition');
 			let temp = initPosition
-			let max = {x:100,y:100}
-			let Lane = document.querySelector('.Lane')
-			 // obj宽度
-			 const clientWidth = Lane.clientWidth / 13;
-			 // obj长度
-			 const clientHeight = Lane.clientHeight;
-			 // obj左边距
-			 const offsetLeft = Lane.offsetLeft;
-			 // obj上边距
-			 const offsetTop = Lane.offsetTop;
-			 // 最大x
-			 const maxX = clientWidth;
-			 // 最大y
-			 const maxY = clientHeight;
-				 let maxy = 100
-				 temp.map((j) => {
-					j.x = (j.x - offsetLeft) * max.x / clientWidth;
-					j.y = (maxY - (j.y - offsetTop)) * max.y / maxY;
-				 })
-				 console.log(temp,'temp');
-				 console.log(speedxy,'speedxy');
-				 let data = {
-							"cav_y": sysLine[0].y,
-							"cav_x_x_list": 
-								temp.map((v,i)=>(v.x))
-							,
-							"cav_x_y_list": 
-								temp.map((v,i)=>(v.y))
-							,
-							"cav_v_x_list": 
-								temp.map((v,i)=>(v.x))
+			let max = { x: 100, y: 100 }
+			let Lane = document.querySelector('.cavClassic-right-main')
+			Lane.style.marginLeft = 0
+			// obj宽度
+			const clientWidth = Lane.clientWidth / 13;
+			// obj长度
+			const clientHeight = Lane.clientHeight;
+			// obj左边距
+			const offsetLeft = Lane.offsetLeft;
+			// obj上边距
+			const offsetTop = Lane.offsetTop;
+			// 最大x
+			const maxX = clientWidth;
+			// 最大y
+			const maxY = clientHeight;
+			let maxy = 100
+			temp.map((j) => {
+				j.x = (j.x - offsetLeft) * max.x / clientWidth;
+				j.y = (maxY - (j.y - offsetTop)) * max.y / maxY;
+			})
+			console.log(temp, 'temp');
+			console.log(speedxy, 'speedxy');
+			let data = {
+				"cav_y": sysLine[0].y,
+				"cav_x_x_list":
+					temp.map((v, i) => (v.x))
+				,
+				"cav_x_y_list":
+					temp.map((v, i) => (v.y))
+				,
+				"cav_v_x_list":
+					temp.map((v, i) => (v.x))
 
-								// speedxy[0].x?speedxy[0].x:0,
-								// speedxy[1].x?speedxy[1].x:0,
-								// speedxy[2].x?speedxy[2].x:0
-							,
-							"cav_v_y_list": 
-								temp.map((v,i)=>(v.y))
-								// speedxy[0].y?speedxy[0].y:0,
-								// speedxy[1].y?speedxy[1].y:0,
-								// speedxy[2].y?speedxy[2].y:0
-							,
-							"cav_r_x": 5,
-							"cav_r_v": 6
-						}
-						console.log(data,'tata');
-						let url = 'http://10.21.71.79:8000/model/1/easy-task';
+				// speedxy[0].x?speedxy[0].x:0,
+				// speedxy[1].x?speedxy[1].x:0,
+				// speedxy[2].x?speedxy[2].x:0
+				,
+				"cav_v_y_list":
+					temp.map((v, i) => (v.y))
+				// speedxy[0].y?speedxy[0].y:0,
+				// speedxy[1].y?speedxy[1].y:0,
+				// speedxy[2].y?speedxy[2].y:0
+				,
+				"cav_r_x": 5,
+				"cav_r_v": 6
+			}
+			console.log(data, 'tata');
+			let url = 'http://10.21.71.79:8000/model/1/easy-task';
 			setMove(false)
 			setCoor([{ x: 0, y: 0 }])
 			setScrCoor([{ x: 0, y: 0 }])
-			setLoading(true)
-			axiosJSONPost(url,data).
-						then(response => { 
-							console.log(response.data.data.location,response.data.data.speed);
-							let data = []
-							response.data.data.location.map((v,i)=>{
-								// data.push({list:[{x:v[0][0],y:v[1][0]},{x:v[0][1],y:v[1][1]},{x:v[0][2],y:v[1][2]}]})
-								data.push({list:v[0].map((value,index)=>({x:v[0][index],y:v[1][index]}))})
-							})
-							console.log(data,'data');
-							setCoor(data); 
-							setLoading(false); 
-							setMove(true) 
-						})
-				
+			// setLoading(true)
+			axiosJSONPost(url, data).
+				then(response => {
+					console.log(response, 'response');
+					let data = []
+					response.data.data.location.map((v, i) => {
+						// data.push({list:[{x:v[0][0],y:v[1][0]},{x:v[0][1],y:v[1][1]},{x:v[0][2],y:v[1][2]}]})
+						data.push({ list: v[0].map((value, index) => ({ x: v[0][index], y: v[1][index] })) })
+					})
+					console.log(data, 'data');
+					setCoor(data);
+					// setLoading(false);
+					setMove(true)
+				})
+
 		}
 	}, [run])
 	// useEffect(() => {
@@ -167,29 +169,31 @@ export default function CavClassic() {
 	// }, [Speedx, Speedy,dis,speed])
 
 	// 获取收敛线的坐标
-	useEffect(()=>{
+	useEffect(() => {
 		// console.log('sysLine',sysLine[0].x,sysLine[0].y);
-	},[sysLine]);
-
+	}, [sysLine]);
+	useEffect(() => {
+		console.log(refresh, 'refresh');
+	}, [refresh]);
 
 	return (
 		<div className="cavClassic">
-			{/* <Context.Provider value={{ Ncar, Nlane }}> */}
-				{Loading ? <div className='video'> <video src={loading} autoPlay muted={true} loop={true}></video> </div> : ''}
-				<CavSider setInitPosition={setInitPosition} setSpeedxy={setSpeedxy} setRun={setRun} run={run} setMove={setMove} setNcar={setNcar} setNlane={setNlane} setSdistance={setSdistance}  />
+			<Context.Provider value={{ initPosition, setInitPosition }}>
+				{/* {Loading ? <div className='video'> <video src={loading} autoPlay muted={true} loop={true}></video> </div> : ''} */}
+				<CavSider refresh={refresh} setRefresh={setRefresh} setInitPosition={setInitPosition} setSpeedxy={setSpeedxy} setRun={setRun} run={run} setMove={setMove} setNcar={setNcar} setNlane={setNlane} setSdistance={setSdistance} />
 				<div className="cavClassic-right">
 					<div className="cavClassic-right-head">
-							<Button><Space>Del <DeleteFilled /></Space></Button>
+						<Button><Space>Del <DeleteFilled /></Space></Button>
 					</div>
-					<div className='cavClassic-right-main'>
-						{Ncar.map((value, index) => (<Car speedxy={speedxy} setSpeedxy={setSpeedxy}  initPosition={initPosition} setInitPosition={setInitPosition} module='cavClassic' index={index} move={move} setMove={setMove} scrCoor={scrCoor.length > 10 ?
+					{refresh ? <div className='cavClassic-right-main'>
+						{Ncar.map((value, index) => (<Car setLeftest={index === 0 ? setLeftest : ''} speedxy={speedxy} setSpeedxy={setSpeedxy} initPosition={initPosition} setInitPosition={setInitPosition} module='cavClassic' index={index} move={move} setMove={setMove} scrCoor={scrCoor.length > 10 && move ?
 							scrCoor.map((v, i) => ({ y: v.list[index].y, x: v.list[index].x === Math.min(...v.list.map((vv, ii) => (vv.x))) ? Leftest : Leftest + (v.list[index].x - Math.min(...v.list.map((vv, ii) => (vv.x)))) }))
-							: ''} angle={angle} key={index}  setDis={setDis} setSpeed={setSpeed}/>))}
-						<Lane  move={move} setScrCoor={setScrCoor} coor={coor} Nlane={Nlane} setSysLine={setSysLine} line={line}/>
-						<Line setLine={setLine}/>
-					</div>
+							: ''} angle={angle} key={index} setDis={setDis} setSpeed={setSpeed} />))}
+						<Lane move={move} setScrCoor={setScrCoor} coor={coor} Nlane={Nlane} setSysLine={setSysLine} line={line} />
+						<Line setLine={setLine} />
+					</div> : ''}
 				</div>
-			{/* </Context.Provider> */}
+			</Context.Provider>
 		</div>
 	)
 }

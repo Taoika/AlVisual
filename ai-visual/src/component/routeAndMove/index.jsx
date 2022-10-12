@@ -1,7 +1,7 @@
 import { InputNumber, Popover, Space } from 'antd';
 import React from 'react'
 import { useEffect, useState, useRef, useContext } from 'react';
-import { Context } from '../../pages/cavClassic'
+// import { Context } from '../../pages/cavClassic'
 
 import './index.css'
 import Car from '../../assets/images/car.png'
@@ -16,12 +16,15 @@ const sleep = (delay) => {
 export default function RouteAndMove(props) {
     // const { Ncar, Nlane } = useContext(Context)
     // 图像位置状态
+
     const [xyz, setXyz] = useState({ x: 200, y: 120 });
     const [trixyz, setTrixyz] = useState({ x: 200, y: 120 });
     const [bubxyz, setBubxyz] = useState({ x: 90, y: 70 })
+    const [numxyz, setNumxyz] = useState({ x: 90, y: 70 })
+
     const [show, setShow] = useState(false);
-    const [carP,setCarP] = useState({ x: 0, y: 0 })
-    const [carAngle,setCarAngle] = useState(0);
+    const [carP, setCarP] = useState({ x: 0, y: 0 })
+    const [carAngle, setCarAngle] = useState(0);
 
     // 图像旋转状态
     const [angle, setAngle] = useState(0);
@@ -37,11 +40,16 @@ export default function RouteAndMove(props) {
     const disRef = useRef(null);
     //半径R
     const R = 70
-
-    function  handleShow(){
+    function handleShow() {
         setShow(!show);
     }
-
+    // useEffect(() => {
+    //     console.log(props.initPosition, 'change');
+    //     if (props.initPosition && props.initPosition[props.index] && props.initPosition[props.index].x === 200 && props.initPosition[props.index].y === 0) {
+    //         console.log('需要初始化');
+    //         setXyz({ x: 200, y: 100 })
+    //     }
+    // }, [props.initPosition])
     //处理鼠标旋转图像
     const rotate = (obj, set) => {
         obj.onmousedown = (event) => {
@@ -74,8 +82,8 @@ export default function RouteAndMove(props) {
                     let tempY = speedRef.current?.value * Math.sin(angle)
                     let tempX = speedRef.current?.value * Math.cos(angle)
                     let speed = props?.speedxy
-                    speed[props.index].x=event2.clientX<carP.x?-tempX:tempX
-                    speed[props.index].y=event2.clientX>carP.x?-tempY:tempY
+                    speed[props.index].x = event2.clientX < carP.x ? -tempX : tempX
+                    speed[props.index].y = event2.clientX > carP.x ? -tempY : tempY
                     props.setSpeedxy(speed)
                     // props?.setSpeedx(event2.clientX<o.x?-tempX:tempX);
                     // props?.setSpeedy(event2.clientX>o.x?-tempY:tempY);
@@ -154,15 +162,7 @@ export default function RouteAndMove(props) {
 
             // 绑定一个鼠标松开事件
             document.onmouseup = (e) => {
-                if(props.initPosition){
-                    let cars = document.querySelectorAll('.car')
-                    let car = cars[props.index]
-                    let position = props.initPosition
-                    position[props.index].x=car.offsetLeft
-                    position[props.index].y=car.offsetTop
-                    console.log(props.initPosition,position,'position');
-                    props.setInitPosition(position)
-                }
+
                 // 取消鼠标移动事件
                 if (lastLeft) {
                     coorTransform(lastLeft, lastTop, setXyz)
@@ -193,13 +193,28 @@ export default function RouteAndMove(props) {
                 last = center;
             }
         }
+        if (props.initPosition) {
+            let position = props.initPosition
+            if (position[props.index]) {
+                if (props.setLeftest) {
+                    console.log(x, 'x');
+                    props.setLeftest(x)
+                }
+                position[props.index].x = x
+                position[props.index].y = last - 25 + 50
+                props.setInitPosition(position)
+            } else {
+                console.log('error');
+            }
+
+        }
         set({ x, y: last - 25 })
     }
-    
+
     useEffect(() => {
         if (props.scrCoor.length > 10 && props.move) {
             let i = 0;
-            let count = 0;
+            let count = [];
             props.scrCoor[0].y < props.scrCoor[props.scrCoor.length - 1].y ? setAngle(10) : setAngle(-10)
             const timer = setInterval(() => {
                 // && Math.abs(props.scrCoor[i].y - props.scrCoor[i + 1].y) <= 2
@@ -210,20 +225,26 @@ export default function RouteAndMove(props) {
                     let car = cars[props.index]
                     // if (car.offsetTop !== 120) {
                     let angle = car.offsetTop - y.split('p')[0]
-                    if (Math.abs(angle) < 1 && angle !== 0) {
-                        count++;
-                        if (count >= 10 && count < 100) {
-                            let tz = 10;
-                            let tf = -10;
-                            let timer1 = setInterval(() => {
-                                angle < 0 ? setAngle(tz--) : setAngle(tf++)
-                                if (tz < 0 || tf > 0) {
-                                    clearInterval(timer1)
-                                }
-                            }, 50)
-                            count = 120
-                        }
+                    count.push(angle)
+                    if (count.length === 15) {
+                        let avar = count.reduce((pre, cur) => (pre + cur)) / 10
+                        setAngle(-avar * 5)
+                        count = []
                     }
+                    // if (Math.abs(angle) < 1 && angle !== 0) {
+                    //     count++;
+                    //     if (count >= 10 && count < 100) {
+                    //         let tz = 10;
+                    //         let tf = -10;
+                    //         let timer1 = setInterval(() => {
+                    //             angle < 0 ? setAngle(tz--) : setAngle(tf++)
+                    //             if (tz < 0 || tf > 0) {
+                    //                 clearInterval(timer1)
+                    //             }
+                    //         }, 50)
+                    //         count = 120
+                    //     }
+                    // }
                     // Math.abs(angle) - 20 <= 0 ? setAngle(angle) : angle > 0 ? setAngle(20) : setAngle(-20)
                     // if (props.index === 0) {
                     //     console.log(-angle * 10);
@@ -292,6 +313,12 @@ export default function RouteAndMove(props) {
         bubTemp.x = `calc(${bubTemp.x}px - 170px)`;
         bubTemp.y = `calc(${bubTemp.y}px - 70px)`;
         setBubxyz(bubTemp);
+        let numxyz = toCenter(xyz);
+        // bubTemp.x = `calc(${bubTemp.x}px - 8vw)`;
+        // bubTemp.y = `calc(${bubTemp.y}px - 5vw)`;
+        numxyz.x = `calc(${numxyz.x}px - 8px)`;
+        numxyz.y = `calc(${numxyz.y}px - 4px)`;
+        setNumxyz(numxyz)
     }, [xyz]);
 
     //坐标转换，从左上角转换到车的正中间(注意传回两个数字，不是px)
@@ -303,7 +330,7 @@ export default function RouteAndMove(props) {
         return { x, y }
     }
 
-    function handleSet(){
+    function handleSet() {
         props?.setDis(disRef.current?.value);
         props?.setSpeed(speedRef.current?.value);
         // 绑定鼠标移动事件
@@ -312,8 +339,8 @@ export default function RouteAndMove(props) {
             let tempY = speedRef.current?.value * Math.sin(angle)
             let tempX = speedRef.current?.value * Math.cos(angle)
             let speed = props?.speedxy
-            speed[props.index].x=event2.clientX<carP.x?-tempX:tempX
-            speed[props.index].y=event2.clientX>carP.x?-tempY:tempY
+            speed[props.index].x = event2.clientX < carP.x ? -tempX : tempX
+            speed[props.index].y = event2.clientX > carP.x ? -tempY : tempY
             props.setSpeedxy(speed)
             // props?.setSpeedx(event2.clientX<carP.x?-tempX:tempX);
             // props?.setSpeedy(event2.clientX>carP.x?-tempY:tempY);
@@ -323,7 +350,8 @@ export default function RouteAndMove(props) {
 
     return (
         <div className='routeAndMove'>
-            <img className='car' src={Car} ref={car1} onDoubleClick={handleShow} style={{ left: xyz.x, top: xyz.y, transform: `rotate(${angle}deg)` }} width='150px'  alt="myCar"/>
+            <img className='car' src={Car} ref={car1} onDoubleClick={handleShow} style={{ left: xyz.x, top: xyz.y, transform: `rotate(${angle}deg)` }} width='150px' alt="myCar" />
+            <div style={{ fontSize: '26px', position: 'absolute', zIndex: '2', left: numxyz.x, top: numxyz.y, }}>{props.index}</div>
             <div className={show ? "bubble show" : "bubble"} style={{ left: bubxyz.x, top: bubxyz.y }}>
                 <Space>Speed:<InputNumber ref={speedRef} controls={false} onChange={handleSet} defaultValue={6}></InputNumber></Space>
                 <Space>safe Distance:<InputNumber ref={disRef} controls={false} onChange={handleSet} defaultValue={115}></InputNumber></Space>

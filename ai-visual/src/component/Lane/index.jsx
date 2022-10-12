@@ -7,7 +7,7 @@ const sleep = (delay) => {
         continue;
     }
 }
-export default function Lane({canMain, Nlane, setScrCoor, coor, move, setSysLine, line }) {
+export default function Lane({ canMain, Nlane, setScrCoor, coor, move, setSysLine, line }) {
 
     // 现有小车A B C D E F 
     // y: 0~140 x: 0~3.0
@@ -69,7 +69,7 @@ export default function Lane({canMain, Nlane, setScrCoor, coor, move, setSysLine
         const maxX = clientWidth;
         // 最大y
         const maxY = clientHeight;
-        
+
         if (coor.length > 10) {
             // let maxy = Math.max(...coor[0].list.map(v => (v.y))) + 10
             let maxy = 100
@@ -86,7 +86,7 @@ export default function Lane({canMain, Nlane, setScrCoor, coor, move, setSysLine
 
             })
             set(coor)
-            console.log('coor2->',coor);
+            console.log('coor2->', coor);
             // set(sysCoor.map((i) => {
             //     return { x: i.x + offsetLeft, y: offsetTop + clientHeight - i.y };
             // }))
@@ -108,10 +108,10 @@ export default function Lane({canMain, Nlane, setScrCoor, coor, move, setSysLine
         // 最大y
         const maxY = clientHeight;
         // 这个是收敛线的坐标转换
-        if(coor.length = 1){
+        if (coor.length = 1) {
             let x = (coor[0].x - offsetLeft) * max.x / obj.clientWidth;
             let y = (maxY - (coor[0].y - offsetTop)) * max.y / maxY;
-            set([{x: x,y: y}]);
+            set([{ x: x, y: y }]);
         }
     }
 
@@ -140,11 +140,11 @@ export default function Lane({canMain, Nlane, setScrCoor, coor, move, setSysLine
         }
     }, [Nlane, coor]);
 
-    useEffect(()=>{
-        if(line && line[0].x != 'undefined' && laneContainer){
+    useEffect(() => {
+        if (line && line[0].x != 'undefined' && laneContainer) {
             treCoorTransform2(laneContainer.current, line, max, setSysLine);
         }
-    },[line]);
+    }, [line]);
 
     return (
         <ul ref={laneContainer} className='Lane'>
